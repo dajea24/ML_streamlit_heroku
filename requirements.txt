@@ -2,8 +2,7 @@ streamlit
 pandas
 numpy
 scikit-learn
-pystan
-fbprophet
+prophet
 plotly
 yfinance
 datetime
