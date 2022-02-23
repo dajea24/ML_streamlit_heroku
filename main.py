@@ -11,12 +11,12 @@ from plotly import graph_objs as go
 START = "2015-01-01"
 TODAY = date.today().strftime("%Y-%m-%d")
 
-st.title('Stock Forecast App')
+st.title("Prédiction du prix d'un titre bousier avec Prophet")
 
 stocks = ('AAPL', 'AMZN', 'WMT', 'NFLX','MAR','AAL')
-selected_stock = st.selectbox('Select dataset for prediction', stocks)
+selected_stock = st.selectbox('Selectionner le titre à prédir', stocks)
 
-n_days = st.slider('Day of prediction:', 1, 365)  # for one week
+n_days = st.slider('Nombre de jour à prédir:', 1, 365)  # for one week
 
 
 @st.cache
@@ -26,12 +26,12 @@ def load_data(ticker):
     return data
 
 
-data_load_state = st.text('Loading data...')
+data_load_state = st.text('Télégargement des données...')
 data = load_data(selected_stock)
 data.to_csv('out.csv')  
-data_load_state.text('Loading data... done!')
+data_load_state.text('Téléchargement des données... fait!')
 
-st.subheader('Raw data')
+st.subheader('Données Brutes')
 st.write(data.tail())
 
 
@@ -40,7 +40,7 @@ def plot_raw_data():
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=data['Date'], y=data['Open'], name="stock_open"))
     fig.add_trace(go.Scatter(x=data['Date'], y=data['Close'], name="stock_close"))
-    fig.layout.update(title_text='Time Series data with Rangeslider', xaxis_rangeslider_visible=True)
+    fig.layout.update(title_text='Données de séries chronologiques', xaxis_rangeslider_visible=True)
     st.plotly_chart(fig)
 
 
@@ -60,10 +60,10 @@ future = m.make_future_dataframe(periods=period, freq='30min')
 forecast = m.predict(future)
 
 # Show and plot forecast
-st.subheader('Forecast data')
+st.subheader('Données Prédites')
 st.write(forecast.tail())
 
-st.write(f'Forecast plot for {n_days} days')
+st.write(f'Figure de la prévison pour {n_days} jours')
 fig1 = plot_plotly(m, forecast)
 st.plotly_chart(fig1)
 
