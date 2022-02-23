@@ -1,8 +1,8 @@
 # ML_streamlit_heroku
-Deployment web streamlit with Heroku 
+
+## Déploiement avec Streamlit sur Heroku
 
 https://prophet-1.herokuapp.com/
-
 
 **Prophet** est une procédure de prévision de données de séries chronologiques basée sur un **modèle additif** où les **tendances non linéaires** sont ajustées à la saisonnalité annuelle, hebdomadaire et quotidienne, ainsi qu'aux effets des vacances. 
 
