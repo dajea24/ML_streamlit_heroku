@@ -1,6 +1,6 @@
 # ML_streamlit_heroku
 
-## Déploiement avec Streamlit sur Heroku
+## Déploiement d'un modèle ML avec Streamlit sur Heroku
 
 https://prophet-1.herokuapp.com/
 
