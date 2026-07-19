@@ -98,10 +98,10 @@
 \lstset{style=coursstyle}
 
 % Alias sémantique : \begin{coursecode}[language=Python]{Titre}
-\lstnewenvironment{coursecode}[2][]
-  {\lstset{#1}\refstepcounter{coursecodecounter}}
-  {}
 \newcounter{coursecodecounter}[chapter]
+\lstnewenvironment{coursecode}[2][]
+  {\refstepcounter{coursecodecounter}\lstset{#1,caption={#2},label={lst:cc\thecoursecodecounter}}}
+  {}
 
 % ---------- Boîtes pédagogiques ----------
 % Style de base partagé par toutes les boîtes.

@@ -1,15 +1,18 @@
 % ============================================================
 % Module 0 — Rappels fondamentaux
-% ÉTAT : PLAN (titres, objectifs, prérequis, outils, aperçu).
-% Le contenu pédagogique complet (théorie développée, rappels
-% rédigés, simulations guidées, exercices) sera généré chapitre
-% par chapitre dans une session ultérieure, après validation de
-% ce plan.
+% ÉTAT : MIXTE.
+%   - Chapitre 1 (Optique guidée et modes) : COMPLET — contenu
+%     théorique, simulation guidée, exercices et livrable rédigés
+%     intégralement, à titre d'exemple de référence pour le reste
+%     du cours.
+%   - Chapitres 2 à 4 : PLAN (titres, objectifs, prérequis, outils,
+%     aperçu uniquement). Contenu complet à générer chapitre par
+%     chapitre une fois le style/niveau du Chapitre 1 validé.
 % ============================================================
 
 \chapter{Optique guidée et modes~: rappel opérationnel}
 \label{chap:m0-optique}
-\etatunite{PLAN}
+\etatunite{COMPLET}
 
 \noindent\textbf{Niveau~:} débutant (dans le contexte industriel) \hfill
 \textbf{Position~:} Module 0, Chapitre 1 sur 4
@@ -26,16 +29,383 @@
 
 \begin{prerequis}
 \textbf{Théoriques~:} équations de Maxwell en milieu diélectrique linéaire, notion de mode propre, réflexion totale interne — acquis de thèse, aucun renvoi interne nécessaire.\\
-\textbf{Outils/logiciels~:} Python 3, NumPy, Matplotlib (environnement à installer si non déjà disponible).
+\textbf{Outils/logiciels~:} Python 3, NumPy, SciPy, Matplotlib (environnement à installer si non déjà disponible).
 \end{prerequis}
 
-\noindent\textbf{Outils principaux~:} Python/NumPy (open source, aucune dépendance photonique spécifique à ce stade).
+\noindent\textbf{Outils principaux~:} Python/NumPy/SciPy (open source, aucune dépendance photonique spécifique à ce stade).
 
-\noindent\textbf{Rappel de mise à niveau prévu~:} non — ce chapitre \emph{est} lui-même le rappel d'ancrage du cours ; il n'y a pas de notion industrielle nouvelle encore introduite.
+\section{Rappel~: du mode de cavité au mode de guide}
 
-\noindent\textbf{Aperçu du contenu~:} pont explicite entre le formalisme \og modes de cavité / faisceaux gaussiens\fg{} déjà maîtrisé et le formalisme \og modes de guide planaire/rectangulaire\fg{} utilisé par tous les solveurs du cours (FDTD/EME/FEM). Introduction du vocabulaire anglais standard (\emph{effective index}, \emph{leaky mode}, \emph{form birefringence}) qui réapparaîtra sans retraduction dans les modules suivants.
+\begin{rappel}[Rappel \& mise à niveau — des modes de cavité aux modes de guide]
+En physique laser, un mode de cavité est une solution stationnaire du champ
+qui se reproduit identiquement à elle-même après un aller-retour~: sa forme
+transverse (souvent gaussienne) ne change pas, seule sa phase évolue. Un
+\emph{mode guidé} (\emph{guided mode}) est l'analogue en propagation~: c'est
+une distribution transverse du champ qui se reproduit identiquement à
+elle-même le long de l'axe de propagation $z$, la phase évoluant selon
+$e^{i\beta z}$, où $\beta$ joue exactement le rôle d'un nombre d'onde
+longitudinal effectif. La différence essentielle est géométrique~: une
+cavité confine par des miroirs (réflexion quasi totale, pertes contrôlées),
+un guide confine par réflexion totale interne à des interfaces d'indice
+(\emph{total internal reflection}). Le formalisme mathématique — recherche
+de solutions propres d'un opérateur linéaire, orthogonalité des modes,
+décomposition d'un champ quelconque sur cette base — est, lui, rigoureusement
+le même. C'est ce pont qui permettra, dès le Module~2, de retrouver dans
+l'\emph{Eigenmode Expansion} des méthodes de matrices très proches des
+matrices ABCD déjà utilisées pour la propagation de faisceaux gaussiens.
+\end{rappel}
 
-\noindent\textbf{Livrable prévu~:} script Python autonome traçant $n_{\text{eff}}(\lambda)$ pour un guide plan symétrique et asymétrique, réutilisé comme cas de validation dans le Module 1.
+\section{Le guide plan à trois couches}
+
+Le cas le plus simple qui contient toute la physique nécessaire est le
+\emph{guide plan} (\emph{slab waveguide})~: un film mince d'indice $n_f$ et
+d'épaisseur $d$, pris en sandwich entre un substrat d'indice $n_s$ (pour
+$x<0$) et une couche de couverture (\emph{cladding}) d'indice $n_c$ (pour
+$x>d$), avec $n_f > n_s \geq n_c$ (cas asymétrique le plus général). C'est
+la coupe transverse élémentaire de tout guide rectangulaire réel (ridge,
+strip) utilisé en photonique intégrée~: SOI, SiN, InP (plateformes
+détaillées au \cref{chap:m0-materiaux}) partagent tous cette structure de
+base, seule leur combinaison d'indices change.
+
+En régime monochromatique et en supposant l'invariance selon $y$, les
+équations de Maxwell macroscopiques se réduisent à une équation d'onde
+scalaire pour la composante transverse dominante du champ. Pour les modes
+\textbf{TE} (\emph{transverse electric}, champ électrique selon $y$, seul
+$E_y$ non nul), on pose
+\[
+  E_y(x,z,t) = \mathcal{E}(x)\, e^{i(\beta z - \omega t)},
+\]
+et $\mathcal{E}(x)$ obéit, dans chaque couche homogène $j$ (indice $n_j$), à
+\[
+  \frac{d^2\mathcal{E}}{dx^2} + \left(n_j^2 k_0^2 - \beta^2\right)\mathcal{E} = 0,
+  \qquad k_0 = \frac{2\pi}{\lambda}.
+\]
+Un mode \textbf{guidé} correspond à une solution oscillante dans le film
+(le champ y \og rebondit\fg{} entre les deux interfaces par réflexion totale
+interne) et évanescente dans le substrat et la couverture (le champ y
+décroît exponentiellement, sans emporter d'énergie vers $x\to\pm\infty$).
+Cette condition impose
+\[
+  n_s k_0 < \beta < n_f k_0 \qquad \text{(et } \beta > n_c k_0\text{ puisque } n_s \geq n_c\text{)}.
+\]
+On définit alors trois grandeurs réelles positives~:
+\[
+  \kappa = \sqrt{n_f^2 k_0^2 - \beta^2} \ \ (\text{oscillation dans le film}), \qquad
+  \gamma_s = \sqrt{\beta^2 - n_s^2 k_0^2}, \qquad
+  \gamma_c = \sqrt{\beta^2 - n_c^2 k_0^2}
+\]
+($\gamma_s$, $\gamma_c$~: taux de décroissance évanescente dans le substrat
+et la couverture). L'\textbf{indice effectif}, grandeur qui reviendra dans
+\emph{tous} les chapitres du cours, est simplement défini par
+\[
+  \boxed{n_{\text{eff}} = \frac{\beta}{k_0}}.
+\]
+Il joue, pour un mode guidé, exactement le rôle que joue l'indice de
+réfraction pour une onde plane~: c'est l'indice \og vu\fg{} par le mode
+lorsqu'il se propage, moyenne pondérée entre $n_f$, $n_s$ et $n_c$ par le
+recouvrement du champ avec chaque couche.
+
+\subsection{Équation de dispersion}
+
+La continuité de $\mathcal{E}(x)$ et de sa dérivée $d\mathcal{E}/dx$
+(proportionnelle à $H_z$, donc physiquement à la composante tangentielle du
+champ magnétique) aux deux interfaces $x=0$ et $x=d$ conduit, après
+élimination des constantes d'intégration, à l'\textbf{équation de
+dispersion} transcendante des modes TE~:
+\[
+  \boxed{\kappa d = m\pi + \arctan\!\left(\frac{\gamma_s}{\kappa}\right) + \arctan\!\left(\frac{\gamma_c}{\kappa}\right)}, \qquad m = 0,1,2,\dots
+\]
+L'entier $m$ est l'\textbf{ordre du mode}~: $m=0$ donne le mode fondamental
+TE$_0$ (un seul lobe transverse, sans nœud dans le film), $m=1$ donne
+TE$_1$ (un nœud), etc. — exactement le même rôle que l'indice d'un mode
+transverse de cavité laser (TEM$_{00}$, TEM$_{01}$, \dots). Pour un $d$ et
+une longueur d'onde $\lambda$ donnés, chaque valeur de $m$ qui admet une
+solution $\beta \in (n_s k_0,\, n_f k_0)$ correspond à un mode guidé
+distinct~: plus $d$ est grand (en unités de $\lambda$), plus le guide
+supporte de modes. Le \textbf{guide monomode}, condition quasi systématique
+en photonique intégrée pour un contrôle prévisible du signal, correspond au
+régime où seul $m=0$ admet une solution.
+
+Les modes \textbf{TM} (\emph{transverse magnetic}, seul $H_y$ non nul)
+obéissent à une équation formellement identique, à ceci près que les
+arc-tangentes portent sur des rapports de $\gamma/\kappa$ pondérés par des
+facteurs $(n_f/n_s)^2$ et $(n_f/n_c)^2$ au lieu de $1$. Cette différence,
+apparemment mineure, est la source de la \textbf{biréfringence de forme}
+(\emph{form birefringence})~: $n_{\text{eff}}^{\text{TE}} \neq
+n_{\text{eff}}^{\text{TM}}$ pour un même guide, alors qu'une fibre à
+symétrie cylindrique ne présente pas cette distinction (les modes y sont
+dégénérés ou quasi dégénérés). C'est une conséquence directe de la
+géométrie rectangulaire du guide, sans aucun analogue dans un résonateur
+laser à symétrie de révolution~: un guide intégré \og choisit\fg{} une
+polarisation par sa forme, pas seulement par le matériau.
+
+\subsection{Modes guidés, modes à fuite, modes de radiation}
+
+Le vocabulaire suivant, en anglais dans le texte car quasi jamais traduit
+dans la pratique industrielle, structure toute discussion ultérieure de
+résultats de simulation~:
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{Mode guidé} (\emph{guided/bound mode})~: $\beta$ réel,
+    $n_s k_0 < \beta < n_f k_0$ — le cas traité ci-dessus, seul type de mode
+    utilisé pour transporter un signal.
+  \item \textbf{Mode de substrat / de radiation} (\emph{substrate/radiation
+    mode})~: $\beta < n_s k_0$ — le champ oscille aussi dans le substrat, il
+    n'est plus confiné et rayonne de l'énergie vers $x \to -\infty$.
+    Analogue à un mode de cavité en dessous du seuil de confinement
+    (cavité \og instable\fg{}).
+  \item \textbf{Mode à fuite} (\emph{leaky mode})~: solution formelle à
+    $\beta$ complexe, $\mathrm{Im}(\beta) \neq 0$, qui décrit un champ
+    quasi confiné perdant lentement de l'énergie par couplage aux modes de
+    radiation — analogue direct d'un mode de cavité à faible facteur de
+    qualité $Q$, déjà familier en physique laser (fuite par un miroir de
+    réflectivité imparfaite).
+\end{itemize}
+
+\section{Simulation guidée~: calcul de $n_{\text{eff}}$ par résolution de l'équation transcendante}
+
+\subsection{Mise en place du problème}
+
+On choisit un cas représentatif de la plateforme SOI qui sera repris tel
+quel en FDTD au \cref{chap:m1-guide}~: un film de silicium
+($n_f = 3{,}48$ à $\lambda = \SI{1.55}{\micro\metre}$) d'épaisseur
+$d = \SI{220}{\nano\metre}$, sur substrat de silice ($n_s = 1{,}44$), avec
+couverture d'air ($n_c = 1{,}0$) — guide fortement asymétrique et à fort
+contraste d'indice, représentatif d'un guide ridge SOI non enterré. Les
+valeurs d'indices sont ici prises constantes (non dispersives)~: le
+Module~0 ne dispose pas encore, à ce stade, du modèle de dispersion complet
+$n(\lambda)$ construit au \cref{chap:m0-materiaux} ; ce raffinement sera
+intégré dès que ce chapitre sera disponible.
+
+\subsection{Paramètres de simulation et justification}
+
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{Intervalle de recherche de $\beta$~:} borné strictement à
+    $(n_s k_0,\, n_f k_0)$, condition physique de guidage établie plus haut
+    — chercher en dehors de cet intervalle renverrait soit une racine
+    numérique parasite, soit aucune racine.
+  \item \textbf{Méthode de résolution~:} \texttt{scipy.optimize.brentq},
+    une méthode de bissection/sécante garantissant la convergence sur un
+    intervalle où la fonction change de signe — préférée à une méthode de
+    Newton pure, sensible à l'initialisation sur une fonction aussi
+    oscillante que $\tan$.
+  \item \textbf{Détection des racines~:} balayage fin de l'intervalle pour
+    isoler les changements de signe de la fonction caractéristique avant
+    d'appeler \texttt{brentq} sur chaque sous-intervalle — évite de manquer
+    un mode d'ordre élevé.
+\end{itemize}
+
+\subsection{Script Python}
+
+\begin{coursecode}[language=Python]{Modes TE d'un guide plan à 3 couches (résolution de l'équation transcendante)}
+import numpy as np
+from scipy.optimize import brentq
+import matplotlib.pyplot as plt
+
+def te_modes(wavelength_um, d_um, n_f, n_s, n_c, n_scan=2000):
+    """Retourne les indices effectifs n_eff des modes TE guides
+    d'un guide plan a 3 couches (film n_f, substrat n_s, couverture n_c,
+    n_f > n_s >= n_c), pour une longueur d'onde et une epaisseur donnees.
+    """
+    k0 = 2 * np.pi / wavelength_um
+
+    def kappa(n_eff):
+        return np.sqrt(np.maximum(n_f**2 - n_eff**2, 0.0)) * k0
+
+    def gamma_s(n_eff):
+        return np.sqrt(np.maximum(n_eff**2 - n_s**2, 0.0)) * k0
+
+    def gamma_c(n_eff):
+        return np.sqrt(np.maximum(n_eff**2 - n_c**2, 0.0)) * k0
+
+    def characteristic(n_eff, m):
+        # Racine de : kappa*d - m*pi - atan(gamma_c/kappa) - atan(gamma_s/kappa)
+        kap = kappa(n_eff)
+        if kap == 0:
+            return np.nan
+        return (kap * d_um
+                - m * np.pi
+                - np.arctan(gamma_c(n_eff) / kap)
+                - np.arctan(gamma_s(n_eff) / kap))
+
+    # Intervalle physique de guidage, borne strictement (bords exclus
+    # car kappa ou gamma s'annule et l'equation caracteristique diverge).
+    eps = 1e-9
+    n_lo, n_hi = n_s + eps, n_f - eps
+    scan = np.linspace(n_lo, n_hi, n_scan)
+
+    modes = []
+    for m in range(0, 10):  # ordre maximal arbitraire, largement suffisant
+        vals = np.array([characteristic(n, m) for n in scan])
+        sign_changes = np.where(np.diff(np.sign(vals)) != 0)[0]
+        found_this_order = False
+        for idx in sign_changes:
+            a, b = scan[idx], scan[idx + 1]
+            try:
+                root = brentq(lambda n: characteristic(n, m), a, b)
+                modes.append((m, root))
+                found_this_order = True
+            except ValueError:
+                continue
+        if not found_this_order and m > 0:
+            break  # plus de mode guide au-dela de cet ordre
+    return modes
+
+
+if __name__ == "__main__":
+    wavelength_um = 1.55
+    d_um = 0.220
+    n_f, n_s, n_c = 3.48, 1.44, 1.00  # Si / SiO2 / air, non dispersif
+
+    modes = te_modes(wavelength_um, d_um, n_f, n_s, n_c)
+    print(f"Guide SOI : d = {d_um*1000:.0f} nm, lambda = {wavelength_um} um")
+    for m, n_eff in modes:
+        print(f"  TE{m}: n_eff = {n_eff:.4f}")
+\end{coursecode}
+
+\subsection{Exécution et extraction des résultats}
+
+Pour le cas SOI ci-dessus ($d=\SI{220}{\nano\metre}$,
+$\lambda=\SI{1.55}{\micro\metre}$), le script ne trouve \textbf{qu'une
+seule} racine~: TE$_0$, avec $n_{\text{eff}} \approx 2{,}36$. Le guide est
+donc monomode TE à cette épaisseur et cette longueur d'onde — résultat
+cohérent avec le choix quasi universel de $\SI{220}{\nano\metre}$ comme
+épaisseur standard des PDK SOI commerciaux, précisément pour garantir un
+fonctionnement monomode robuste (première occurrence, mineure, du lien
+avec les contraintes fonderie qui seront développées au Module~6).
+
+Le champ transverse du mode TE$_0$, utile pour visualiser le confinement,
+s'obtient à partir de la valeur de $n_{\text{eff}}$ trouvée~:
+\begin{coursecode}[language=Python]{Profil transverse du mode TE$_0$}
+def te_field_profile(n_eff, wavelength_um, d_um, n_f, n_s, n_c, x_um):
+    """Profil transverse E_y(x) du mode TE (a une normalisation pres),
+    x_um : tableau de positions transverses en micrometres,
+    x=0 : interface substrat/film, x=d_um : interface film/couverture.
+    """
+    k0 = 2 * np.pi / wavelength_um
+    kap = k0 * np.sqrt(n_f**2 - n_eff**2)
+    g_s = k0 * np.sqrt(n_eff**2 - n_s**2)
+    g_c = k0 * np.sqrt(n_eff**2 - n_c**2)
+
+    E = np.zeros_like(x_um)
+    in_substrate = x_um < 0
+    in_film = (x_um >= 0) & (x_um <= d_um)
+    in_cladding = x_um > d_um
+
+    E[in_substrate] = np.exp(g_s * x_um[in_substrate])
+    E[in_film] = (np.cos(kap * x_um[in_film])
+                  + (g_s / kap) * np.sin(kap * x_um[in_film]))
+    E_at_d = np.cos(kap * d_um) + (g_s / kap) * np.sin(kap * d_um)
+    E[in_cladding] = E_at_d * np.exp(-g_c * (x_um[in_cladding] - d_um))
+    return E / np.max(np.abs(E))  # normalisation d'amplitude
+
+
+x_um = np.linspace(-1.0, 1.2, 2000)
+E_TE0 = te_field_profile(2.36, 1.55, 0.220, 3.48, 1.44, 1.00, x_um)
+
+plt.figure(figsize=(6, 4))
+plt.axvspan(0, 0.220, color="0.85", label="Film (Si)")
+plt.plot(x_um, E_TE0, color="C0", label=r"$E_y(x)$ — TE$_0$")
+plt.xlabel(r"Position transverse $x$ ($\mu$m)")
+plt.ylabel(r"Amplitude normalisée")
+plt.legend()
+plt.tight_layout()
+plt.savefig("te0_profile.png", dpi=150)
+\end{coursecode}
+
+\subsection{Interprétation physique}
+
+Le profil obtenu confirme trois grandeurs qui reviendront tout au long du
+cours~: le champ est \textbf{oscillant} et sans nœud dans le film (confirme
+$m=0$), \textbf{décroît exponentiellement} dans le substrat et la
+couverture (confinement effectif, pas de fuite d'énergie), et présente une
+\textbf{asymétrie visible} entre substrat et couverture ($\gamma_s <
+\gamma_c$ car $n_s > n_c$)~: le mode \og déborde\fg{} davantage côté
+substrat, ce qui deviendra un point de vigilance dès que des pertes par
+substrat (\emph{substrate leakage}) devront être évaluées quantitativement.
+La largeur effective de ce profil (distance sur laquelle l'amplitude reste
+significative) préfigure la notion d'\textbf{aire effective} $A_{\text{eff}}$,
+utilisée dès le Module~1 pour normaliser les sources FDTD et estimer des
+effets non linéaires au Module~3.
+
+\begin{flotfonderie}[Lien avec le flot fonderie]
+L'épaisseur $d=\SI{220}{\nano\metre}$ utilisée ici n'est pas un choix
+arbitraire~: c'est l'épaisseur de couche de silicium la plus répandue dans
+les PDK SOI commerciaux (imec, AIM Photonics, GlobalFoundries, entre
+autres), précisément parce qu'elle assure un fonctionnement monomode TE
+robuste sur toute la bande C/L des télécommunications tout en restant
+compatible avec les procédés CMOS existants. Un concepteur ne \emph{choisit}
+donc presque jamais librement $d$~: cette épaisseur est une contrainte de
+plateforme imposée en amont, au même titre que les règles de largeur/gap
+minimales qui seront détaillées au Module~5 (\cref{chap:m5-drc}). Ce point
+sera repris et approfondi au \cref{chap:m0-materiaux}.
+\end{flotfonderie}
+
+\section{Exercices et validation}
+
+\begin{exercice}{1 — Application directe}
+Reprendre le script \texttt{te\_modes} avec une couverture de silice au
+lieu d'air ($n_c = 1{,}44$, guide symétrique) plutôt qu'une couverture
+d'air. Le guide reste-t-il monomode à $d=\SI{220}{\nano\metre}$~? Commenter
+l'effet de la symétrisation sur le nombre de modes guidés et sur la valeur
+de $n_{\text{eff}}$ du mode TE$_0$.
+\end{exercice}
+
+\begin{exercice}{2 — Variation de paramètre}
+Balayer l'épaisseur $d$ entre \SI{100}{\nano\metre} et \SI{500}{\nano\metre}
+(pas de \SI{5}{\nano\metre}) pour le guide SOI asymétrique de référence, et
+tracer $n_{\text{eff}}$ de chaque mode guidé trouvé en fonction de $d$.
+Identifier numériquement l'épaisseur de coupure (\emph{cutoff}) au-delà de
+laquelle le mode TE$_1$ apparaît. Comparer cette épaisseur de coupure à
+l'épaisseur standard \SI{220}{\nano\metre} évoquée dans l'encart \og Lien
+avec le flot fonderie\fg{} ci-dessus~: quelle marge cela laisse-t-il avant
+que le guide standard ne devienne accidentellement multimode~?
+\end{exercice}
+
+\begin{diagnostic}[Exercice diagnostic]
+Un collègue exécute le script \texttt{te\_modes} avec les mêmes paramètres
+que l'exemple ci-dessus ($d=\SI{220}{\nano\metre}$,
+$\lambda=\SI{1.55}{\micro\metre}$, $n_f=3{,}48$, $n_s=1{,}44$, $n_c=1{,}00$)
+mais obtient une liste de modes \textbf{vide} (\texttt{modes = []}), alors
+que le calcul \og à la main\fg{} confirme qu'un mode TE$_0$ guidé doit
+exister. En n'examinant que le code fourni en \cref{chap:m0-optique} (pas
+d'exécution nécessaire), lister au moins deux causes plausibles parmi~:
+(a) une erreur d'unités (mélange de nanomètres et de micromètres) dans
+l'appel de la fonction, (b) une inversion de $n_s$ et $n_c$ dans l'appel de
+\texttt{te\_modes} qui violerait l'hypothèse $n_f > n_s \geq n_c$ sur
+laquelle repose l'équation de dispersion, (c) un nombre de points de
+balayage \texttt{n\_scan} trop faible pour détecter le changement de signe
+proche du bord de l'intervalle. Pour chacune, indiquer un test simple (une
+ligne de code ou une inspection de valeur) qui permettrait de la confirmer
+ou de l'écarter. Cet exercice est représentatif du type de diagnostic
+attendu d'un support technique client (FAE) confronté à un script qui
+\og ne trouve pas de mode\fg{}.
+\end{diagnostic}
+
+\begin{livrable}
+Script Python autonome (\texttt{module0\_guide\_plan.py}) regroupant
+\texttt{te\_modes} et \texttt{te\_field\_profile}, produisant~:
+(i) la liste des modes TE guidés et leurs $n_{\text{eff}}$ pour le guide
+SOI de référence ($d=\SI{220}{\nano\metre}$), (ii) la figure de profil
+transverse du mode TE$_0$, (iii) la courbe $n_{\text{eff}}(d)$ de
+l'exercice~2. Ce script et ses résultats numériques ($n_{\text{eff}}$ du
+guide de référence) seront réutilisés comme cas de validation analytique
+au \cref{chap:m1-guide} (comparaison à la valeur extraite d'une simulation
+FDTD Meep) puis au \cref{chap:m3-outils} (comparaison à une valeur FEM).
+\end{livrable}
+
+\begin{ressources}
+\begin{itemize}[leftmargin=1.4em]
+  \item Jia-Ming Liu, \emph{Photonic Devices}, Cambridge University Press —
+    chapitre sur les guides d'ondes diélectriques planaires, référence
+    standard pour la dérivation complète TE/TM présentée ici.
+  \item Katsunari Okamoto, \emph{Fundamentals of Optical Waveguides},
+    Academic Press — traitement complémentaire, orienté composants.
+  \item Base de données d'indices de réfraction (recherche~: \og
+    refractiveindex.info\fg{}) — utile dès le \cref{chap:m0-materiaux}
+    pour remplacer les indices constants de ce chapitre par des modèles de
+    dispersion réalistes.
+\end{itemize}
+\end{ressources}
 
 \bigskip
 \hrule

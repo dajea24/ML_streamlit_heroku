@@ -25,18 +25,26 @@ cours/
 
 ## État actuel
 
-**PLAN uniquement.** Chaque chapitre présente son titre, sa position dans le
-cours, ses objectifs pédagogiques, ses prérequis, ses outils, la nécessité
-(ou non) d'un encart de rappel/mise à niveau, un aperçu du contenu prévu et
-son livrable prévu — mais pas encore la théorie développée, les simulations
-guidées ni les exercices complets. Chaque chapitre porte l'annotation
-`\etatunite{PLAN}` en tête ; elle est à retirer manuellement une fois le
-chapitre passé en contenu complet.
+**PLAN pour l'ensemble du cours, à l'exception du Chapitre 0.1 (COMPLET).**
+Chaque chapitre présente son titre, sa position dans le cours, ses objectifs
+pédagogiques, ses prérequis, ses outils, la nécessité (ou non) d'un encart
+de rappel/mise à niveau, un aperçu du contenu prévu et son livrable prévu.
+Chaque chapitre porte l'annotation `\etatunite{PLAN}` (ou `COMPLET`) en
+tête ; à retirer manuellement une fois tout le cours passé en contenu
+complet.
 
-Ce plan est destiné à être validé (numérotation des chapitres, portée de
-chaque unité, outils retenus — en particulier le choix du solveur EME et du
-solveur FEM open source pour les Modules 2 et 3, encore à trancher) avant
-génération du contenu pédagogique complet, chapitre par chapitre.
+Le Chapitre 0.1 (« Optique guidée et modes ») dans
+`modules/module0_rappels.tex` a été rédigé intégralement (rappel, théorie,
+équation de dispersion TE, script Python de résolution + profil de mode,
+lien fonderie, 2 exercices + 1 diagnostic, livrable, ressources) comme
+exemple de référence pour calibrer le niveau de détail, la longueur et le
+style attendus des chapitres suivants.
+
+Le reste du plan est destiné à être validé (numérotation des chapitres,
+portée de chaque unité, outils retenus — en particulier le choix du
+solveur EME et du solveur FEM open source pour les Modules 2 et 3, encore
+à trancher) avant génération du contenu pédagogique complet des chapitres
+restants, un par un.
 
 ## Compilation
 
