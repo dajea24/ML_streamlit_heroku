@@ -1,0 +1,121 @@
+% ============================================================
+% Module 3 — FEM (Finite Element Method)
+% ÉTAT : PLAN.
+% ============================================================
+
+\chapter{Principes de la méthode des éléments finis pour les modes de guide}
+\label{chap:m3-principes}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 3, Chapitre 1 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Dériver la formulation faible (variationnelle) de l'équation d'onde vectorielle pour le calcul de modes, à partir de la formulation forte déjà rencontrée en \cref{chap:m0-em}.
+  \item \textbf{[Théorique]} Expliquer le principe de discrétisation par éléments (fonctions de base locales) et le comparer à la discrétisation par grille régulière de la FDTD (\cref{chap:m1-principes}).
+  \item \textbf{[Théorique]} Justifier pourquoi la FEM est la méthode de référence pour des géométries non rectangulaires (guides gravés en biseau, coins arrondis) là où FDTD/EME sont moins naturelles.
+  \item \textbf{[Pratique]} Résoudre \og à la main\fg{} un problème aux valeurs propres 1D simplifié (discrétisation à 3-5 éléments) pour retrouver le principe avant le passage à un outil dédié.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m0-em,chap:m1-principes}; algèbre linéaire (problèmes aux valeurs propres généralisés) — acquis de thèse.\\
+\textbf{Outils/logiciels~:} Python/NumPy/SciPy (\texttt{scipy.sparse.linalg.eigs}) pour l'illustration \og à la main\fg{}.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} aucun solveur FEM dédié à ce stade — construction pédagogique minimale en Python/SciPy.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} oui, court rappel sur les problèmes aux valeurs propres généralisés $A x = \lambda B x$, si rouillé, avant leur réapparition sous forme de calcul modal FEM.
+
+\noindent\textbf{Aperçu du contenu~:} parallèle explicite formulation forte (FDTD) / formulation faible (FEM), consolidant le tableau de correspondance du \cref{chap:m0-panorama}.
+
+\noindent\textbf{Livrable prévu~:} notebook Python de résolution d'un problème aux valeurs propres 1D minimal, servant de \og pont\fg{} conceptuel avant l'utilisation d'un solveur FEM complet au \cref{chap:m3-outils}.
+
+\bigskip\hrule\bigskip
+
+\chapter{Maillage et convergence~: stratégies pour les guides photoniques}
+\label{chap:m3-maillage}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 3, Chapitre 2 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Définir les critères de qualité d'un maillage (raffinement aux interfaces d'indice, ratio d'aspect des éléments) et leur impact sur la précision du $n_{\text{eff}}$ calculé.
+  \item \textbf{[Pratique]} Réaliser une étude de convergence en maillage (raffinement progressif) et déterminer un critère d'arrêt quantitatif.
+  \item \textbf{[Théorique]} Relier une non-convergence à une cause physique/numérique précise (maillage insuffisant à l'interface cœur/gaine, coin non résolu) — première préparation à l'exercice diagnostic du module.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m3-principes}.\\
+\textbf{Outils/logiciels~:} outil de maillage associé au solveur FEM retenu (cf. \cref{chap:m3-outils}) — Gmsh pressenti comme générateur de maillage open source standard.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Gmsh (maillage, open source) en préparation de l'utilisation effective au \cref{chap:m3-outils}.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} méthodologie générique de convergence (transférable à tout solveur FEM commercial rencontré plus tard, y compris hors du cours), illustrée sur le guide droit de référence du \cref{chap:m1-guide}.
+
+\noindent\textbf{Livrable prévu~:} courbe de convergence $n_{\text{eff}}$ vs finesse de maillage + critère de maillage retenu, documenté pour réutilisation dans tous les calculs FEM ultérieurs du cours.
+
+\bigskip\hrule\bigskip
+
+\chapter{Outils FEM open source pour le calcul modal}
+\label{chap:m3-outils}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 3, Chapitre 3 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Installer et prendre en main un solveur FEM open source pour le calcul modal (scikit-fem ou FEniCSx~: choix à confirmer en rédaction selon maturité de l'exemple guide d'onde au moment de la rédaction).
+  \item \textbf{[Pratique]} Reconstruire en FEM le guide droit de référence (\cref{chap:m1-guide}) et comparer $n_{\text{eff}}$ obtenu à FDTD (Meep) et à la solution analytique (\cref{chap:m0-optique}).
+  \item \textbf{[Pratique]} Calculer un cas que FDTD/EME traitent mal nativement~: un guide à coin arrondi ou à flanc gravé en biseau, réaliste d'un point de vue fonderie.
+  \item \textbf{[Théorique]} Interpréter un résultat de convergence à la lumière des critères établis au \cref{chap:m3-maillage}.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m3-maillage,chap:m1-guide}.\\
+\textbf{Outils/logiciels~:} solveur FEM open source retenu + Gmsh.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} solveur FEM open source (scikit-fem ou FEniCSx) + Gmsh, open source.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} triangulation croisée des trois méthodes du cours (FDTD/EME/FEM) sur un même cas de référence, consolidant le benchmark méthodologique amorcé au \cref{chap:m2-vs-fdtd}.
+
+\noindent\textbf{Livrable prévu~:} tableau triple comparatif $n_{\text{eff}}$ (analytique / FDTD / FEM) sur le guide droit + calcul FEM d'un guide à géométrie non idéale (coin arrondi).
+
+\bigskip\hrule\bigskip
+
+\chapter{Applications électro-optiques~: introduction aux couplages FEM multiphysiques}
+\label{chap:m3-multiphysique}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 3, Chapitre 4 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Présenter le principe d'un couplage multiphysique FEM (par exemple thermo-optique~: champ de température $\to$ variation d'indice $\to$ recalcul modal), sans viser l'exhaustivité.
+  \item \textbf{[Théorique]} Situer ce type de couplage par rapport à un cas déjà connu du physicien~: effet thermo-optique dans un cristal laser, effet électro-optique dans un modulateur Pockels.
+  \item \textbf{[Pratique]} Réaliser un exemple minimal de couplage thermo-optique (profil de température imposé $\to$ décalage de $n_{\text{eff}}$) sur le guide de référence.
+  \item \textbf{[Théorique]} Anticiper le lien avec les composants actifs qui seront réutilisés en modèle compact à l'INTERCONNECT (\cref{chap:m4-interconnect}).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m3-outils}; effet thermo-optique/électro-optique — acquis de thèse pour la physique, nouveauté pour la mise en œuvre numérique couplée.\\
+\textbf{Outils/logiciels~:} solveur FEM retenu, éventuellement extension multiphysique si disponible dans l'outil open source choisi (sinon couplage manuel via script Python).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} solveur FEM open source (couplage manuel thermique/optique via script Python si l'outil ne propose pas de multiphysique intégrée).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} oui, court rappel sur le coefficient thermo-optique $dn/dT$ et son ordre de grandeur pour Si/SiN, par analogie avec les effets thermiques déjà rencontrés en physique laser.
+
+\noindent\textbf{Aperçu du contenu~:} chapitre volontairement introductif (non exhaustif), positionné comme porte d'entrée vers des couplages multiphysiques plus poussés hors du périmètre strict de ce cours.
+
+\noindent\textbf{Livrable prévu~:} courbe de décalage de $n_{\text{eff}}$ en fonction d'un $\Delta T$ imposé, clôturant le Module~3 sur un cas connectable à un composant actif réel (modulateur thermo-optique).

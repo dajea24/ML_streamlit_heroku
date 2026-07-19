@@ -1,0 +1,126 @@
+% ============================================================
+% Module 6 — Interaction avec la fonderie
+% ÉTAT : PLAN.
+% ============================================================
+
+\chapter{Le flot MPW (Multi-Project Wafer)~: cycle, jalons, coûts, calendrier}
+\label{chap:m6-mpw}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 6, Chapitre 1 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Expliquer le principe du \emph{Multi-Project Wafer}~: mutualisation d'une plaque entre plusieurs projets/clients pour réduire le coût d'un run.
+  \item \textbf{[Théorique]} Décrire le cycle typique d'un run MPW (appel à participation, date limite de soumission (\emph{tape-out deadline}), fabrication, retour des puces, délais typiques de plusieurs mois).
+  \item \textbf{[Pratique]} Construire un rétroplanning réaliste de projet PIC intégrant les jalons MPW, à partir d'un calendrier de fonderie académique typique (ex. imec/AIM Photonics/CORNERSTONE selon disponibilité).
+  \item \textbf{[Théorique]} Identifier les livrables attendus par la fonderie à chaque étape du cycle (pré-soumission, soumission finale, retour de mesure).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m5-lvs} (checklist de vérification pré-soumission).\\
+\textbf{Outils/logiciels~:} aucun logiciel nouveau ; chapitre organisationnel/méthodologique.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} aucun — chapitre de contexte industriel, appuyé sur la documentation publique d'un ou plusieurs \emph{foundry services} académiques.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} premier chapitre entièrement consacré au vocabulaire et aux processus fonderie (\emph{tape-out}, \emph{shuttle run}, \emph{die}, \emph{reticle}), destiné à un lecteur qui les découvre pour la première fois malgré son expertise physique.
+
+\noindent\textbf{Livrable prévu~:} rétroplanning-type (diagramme simple) d'un projet PIC académique, des premières simulations à la réception des puces.
+
+\bigskip\hrule\bigskip
+
+\chapter{Dossier de soumission fonderie~: documentation, PDK, checklist de tape-out}
+\label{chap:m6-dossier}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 6, Chapitre 2 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Constituer un dossier de soumission complet~: GDS final vérifié (DRC/LVS, \cref{chap:m5-drc,chap:m5-lvs}), fiche de calques utilisés, description des composants et de leur origine (PDK vs custom).
+  \item \textbf{[Théorique]} Distinguer les responsabilités respectives du concepteur et de la fonderie dans la validation finale d'un design (la fonderie ne revalide pas la physique, seulement la conformité géométrique/procédé).
+  \item \textbf{[Pratique]} Remplir une checklist de tape-out type à partir des éléments déjà produits dans le cours (guide, coupleur, taper, MZI).
+  \item \textbf{[Théorique]} Anticiper les causes usuelles de rejet d'un dossier de soumission (violations DRC non corrigées, calques manquants, métadonnées absentes).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m6-mpw,chap:m5-lvs}.\\
+\textbf{Outils/logiciels~:} KLayout (assemblage final du GDS), gabarits de documentation (à fournir en rédaction complète).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} KLayout (open source) pour l'assemblage final ; pas d'outil commercial nouveau.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} chapitre pratique de synthèse documentaire, transformant les livrables épars des Modules 1-5 en un dossier de soumission unique et cohérent.
+
+\noindent\textbf{Livrable prévu~:} dossier de soumission complet (GDS + documentation) pour le MZI du \cref{chap:m5-ipkiss}, prêt (au format) pour un run MPW académique.
+
+\bigskip\hrule\bigskip
+
+\chapter{Packaging et interfaces optiques/électriques}
+\label{chap:m6-packaging}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 6, Chapitre 3 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Comparer les deux stratégies principales d'interface optique fibre-puce~: couplage par la tranche (\emph{edge coupling}) et couplage par réseau de diffraction (\emph{grating coupler}), en s'appuyant sur les notions de mode déjà acquises (\cref{chap:m0-optique}).
+  \item \textbf{[Pratique]} Simuler (rapidement, en réutilisant les outils du Module~1 ou 4) l'efficacité de couplage d'un \emph{grating coupler} simple et identifier ses paramètres critiques.
+  \item \textbf{[Théorique]} Décrire les interfaces électriques usuelles pour les composants actifs (\emph{wire bonding}, \emph{flip-chip}) et leur impact sur l'encombrement et le placement des \emph{pads}.
+  \item \textbf{[Théorique]} Relier le choix d'interface de packaging à des contraintes de layout déjà rencontrées (Module~5)~: zones d'exclusion, marges de découpe (\emph{dicing}).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m0-optique,chap:m6-dossier}.\\
+\textbf{Outils/logiciels~:} réutilisation de Meep ou Lumerical FDTD (\cref{chap:m1-meep,chap:m4-fdtd-lumerical}) pour la simulation du grating coupler.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Meep ou Lumerical FDTD (réutilisation d'un outil déjà maîtrisé, pas de nouvel outil dans ce chapitre).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} oui, court rappel sur le principe de diffraction d'un réseau, par analogie avec les réseaux de diffraction déjà rencontrés en optique classique.
+
+\noindent\textbf{Aperçu du contenu~:} chapitre qui referme la boucle simulation $\to$ layout $\to$ contrainte physique de packaging, dernier maillon avant la mesure.
+
+\noindent\textbf{Livrable prévu~:} courbe d'efficacité de couplage d'un grating coupler simple vs longueur d'onde + note de comparaison edge coupling / grating coupler pour le cas d'usage du cours.
+
+\bigskip\hrule\bigskip
+
+\chapter{Boucle design-mesure-itération}
+\label{chap:m6-boucle}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 6, Chapitre 4 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Décrire le principe général de caractérisation post-fabrication d'un PIC (banc de mesure fibre-à-fibre, sources large bande, détecteurs) sans viser l'exhaustivité métrologique.
+  \item \textbf{[Pratique]} Comparer un spectre de mesure simulé (généré volontairement avec un écart réaliste) au spectre simulé initial (Module~4) pour illustrer l'écart design-mesure typique.
+  \item \textbf{[Pratique]} Exercice diagnostic de synthèse~: à partir d'un écart mesure/simulation donné, remonter à la cause la plus probable en mobilisant l'ensemble du cours (maillage, tolérance de fabrication, condition aux limites, erreur de packaging).
+  \item \textbf{[Théorique]} Formaliser la boucle d'itération design $\to$ fabrication $\to$ mesure $\to$ correction de modèle, et son coût temporel (plusieurs mois par itération en MPW académique).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} l'ensemble du Module~6 et, en pratique, l'essentiel du cours (\cref{chap:m4-tolerance,chap:m6-packaging}).\\
+\textbf{Outils/logiciels~:} réutilisation des outils Python/Lumerical déjà en place ; aucun nouvel outil.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} aucun nouvel outil — chapitre de synthèse méthodologique.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} chapitre culminant du Module~6, formulé comme un exercice de type support technique client (FAE) mobilisant transversalement les Modules 1 à 6, en préparation directe du projet de synthèse final (Module~7).
+
+\begin{diagnostic}[Exercice diagnostic de synthèse (aperçu)]
+À détailler en rédaction complète~: un spectre de mesure d'un MZI présente un décalage de longueur d'onde de résonance et une extinction dégradée par rapport à la simulation device-level du \cref{chap:m4-projet}. Identifier, à partir des seuls éléments fournis (écart chiffré, tolérances connues du PDK), la ou les causes les plus probables parmi~: variation de largeur de guide hors tolérance, erreur de calibration du grating coupler, dérive thermique non modélisée.
+\end{diagnostic}
+
+\noindent\textbf{Livrable prévu~:} note de diagnostic complète (cause identifiée, justification, recommandation de correction de design), clôturant le Module~6.

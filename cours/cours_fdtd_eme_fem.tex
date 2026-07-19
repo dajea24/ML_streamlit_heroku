@@ -1,0 +1,143 @@
+% ============================================================
+% cours_fdtd_eme_fem.tex — DOCUMENT MAÎTRE
+%
+% Cours : Simulation électromagnétique (FDTD/EME/FEM) et
+% interaction avec les fonderies photoniques.
+%
+% Ce fichier est LE SEUL point d'entrée de compilation. Il porte
+% le préambule, la page de garde et la table des matières
+% uniques du cours. Chaque module est un fichier séparé sous
+% modules/ inséré via \include, afin que la compilation ne
+% produise jamais qu'un unique PDF cohérent.
+%
+% Compilation (XeLaTeX, deux passes minimum, trois si la table
+% des matières ou les références changent) :
+%   xelatex cours_fdtd_eme_fem.tex
+%   xelatex cours_fdtd_eme_fem.tex
+% ============================================================
+
+\documentclass[11pt,twoside,openright]{book}
+
+\usepackage{style_cours}
+
+% ---------- Métadonnées PDF ----------
+\hypersetup{
+  pdftitle={Simulation photonique : FDTD, EME, FEM et interaction fonderie},
+  pdfauthor={},
+  pdfsubject={Cours de simulation électromagnétique en photonique intégrée},
+  colorlinks=true,
+  linkcolor=coursbleu,
+  citecolor=coursbleu,
+  urlcolor=coursbleuclair,
+  bookmarksnumbered=true,
+  bookmarksdepth=3,
+}
+
+% ---------- Compteur de statut d'unité (usage interne) ----------
+% \'Etat de rédaction affiché en filigrane de chapitre tant qu'une
+% unité n'a que son plan (PLAN) ou son contenu complet (COMPLET).
+% Purement informatif ; à retirer manuellement quand toutes les
+% unités du cours sont passées en COMPLET.
+\newcommand{\etatunite}[1]{%
+  \begin{flushright}
+    \small\itshape\textcolor{coursgris}{[État de rédaction : #1]}
+  \end{flushright}
+}
+
+\begin{document}
+
+% ============================================================
+% PAGE DE GARDE (unique pour tout le cours)
+% ============================================================
+\begin{titlepage}
+  \centering
+  \vspace*{2cm}
+
+  {\color{coursbleu}\rule{\textwidth}{1.5pt}}\\[0.4cm]
+  {\Huge\bfseries\color{coursbleu} Simulation électromagnétique intégrée\par}
+  \vspace{0.3cm}
+  {\Large\bfseries\color{coursbleuclair} FDTD, EME, FEM et interaction avec les fonderies photoniques\par}
+  \vspace{0.4cm}
+  {\color{coursbleu}\rule{\textwidth}{1.5pt}}\\[1.2cm]
+
+  {\large\itshape De l'électromagnétisme guidé au tape-out~:\\
+   un parcours code-first pour physicien expérimenté\par}
+
+  \vspace{2.5cm}
+  \begin{tcolorbox}[base,colback=coursbleu!5,colframe=coursbleu,width=0.75\textwidth]
+    \textbf{Public visé~:} physicien(ne) titulaire d'un doctorat en optique
+    guidée / physique laser, disposant d'une base théorique solide en
+    électromagnétisme mais découvrant les outils de simulation industriels
+    (Lumerical, IPKISS, RSoft) et le vocabulaire fonderie.
+  \end{tcolorbox}
+
+  \vfill
+
+  {\large\today\par}
+  \vspace{0.5cm}
+  {\normalsize Document maître unique — compilé en XeLaTeX\par}
+\end{titlepage}
+
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+% ============================================================
+% MODULE 0 — Rappels fondamentaux
+% ============================================================
+\part{Rappels fondamentaux~: optique guidée, électromagnétisme appliqué, plateformes matériaux}
+\label{part:module0}
+\include{modules/module0_rappels}
+
+% ============================================================
+% MODULE 1 — FDTD open source
+% ============================================================
+\part{FDTD open source~: principes, Meep, validation vs théorie}
+\label{part:module1}
+\include{modules/module1_fdtd}
+
+% ============================================================
+% MODULE 2 — EME
+% ============================================================
+\part{EME (Eigenmode Expansion)~: principes et cas d'usage vs FDTD}
+\label{part:module2}
+\include{modules/module2_eme}
+
+% ============================================================
+% MODULE 3 — FEM
+% ============================================================
+\part{FEM~: principes, cas d'usage et outils associés}
+\label{part:module3}
+\include{modules/module3_fem}
+
+% ============================================================
+% MODULE 4 — Ansys Lumerical pour le PIC design
+% ============================================================
+\part{Ansys Lumerical pour le PIC design}
+\label{part:module4}
+\include{modules/module4_lumerical}
+
+% ============================================================
+% MODULE 5 — Layout et PDK
+% ============================================================
+\part{Layout et PDK~: gdsfactory, IPKISS, KLayout, règles de conception fonderie}
+\label{part:module5}
+\include{modules/module5_layout_pdk}
+
+% ============================================================
+% MODULE 6 — Interaction avec la fonderie
+% ============================================================
+\part{Interaction avec la fonderie~: MPW, DRC/LVS photonique, packaging, itération design-mesure}
+\label{part:module6}
+\include{modules/module6_fonderie}
+
+% ============================================================
+% MODULE 7 — Projet de synthèse
+% ============================================================
+\part{Projet de synthèse~: dispositif complet, simulation multi-outils, note d'application finale}
+\label{part:module7}
+\include{modules/module7_projet}
+
+\end{document}

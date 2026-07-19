@@ -1,0 +1,137 @@
+% ============================================================
+% Module 0 — Rappels fondamentaux
+% ÉTAT : PLAN (titres, objectifs, prérequis, outils, aperçu).
+% Le contenu pédagogique complet (théorie développée, rappels
+% rédigés, simulations guidées, exercices) sera généré chapitre
+% par chapitre dans une session ultérieure, après validation de
+% ce plan.
+% ============================================================
+
+\chapter{Optique guidée et modes~: rappel opérationnel}
+\label{chap:m0-optique}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} débutant (dans le contexte industriel) \hfill
+\textbf{Position~:} Module 0, Chapitre 1 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Reformuler la notion d'indice effectif $n_{\text{eff}}$ et de constante de propagation $\beta$ à partir de l'équation de dispersion d'un guide plan.
+  \item \textbf{[Théorique]} Distinguer modes guidés, modes de fuite (leaky) et modes de substrat/radiation, et relier ce vocabulaire à celui, déjà connu, des modes de cavité laser.
+  \item \textbf{[Théorique]} Caractériser la biréfringence de forme (TE/TM) propre aux guides rectangulaires intégrés, absente des fibres à symétrie cylindrique.
+  \item \textbf{[Pratique]} Calculer numériquement $n_{\text{eff}}$ d'un guide plan à 3 couches en Python (méthode graphique/résolution de l'équation transcendante), sans solveur dédié.
+  \item \textbf{[Pratique]} Identifier, sur un profil de mode tracé, les grandeurs qui seront reprises tout au long du cours (largeur à mi-hauteur, confinement, aire effective).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} équations de Maxwell en milieu diélectrique linéaire, notion de mode propre, réflexion totale interne — acquis de thèse, aucun renvoi interne nécessaire.\\
+\textbf{Outils/logiciels~:} Python 3, NumPy, Matplotlib (environnement à installer si non déjà disponible).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Python/NumPy (open source, aucune dépendance photonique spécifique à ce stade).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non — ce chapitre \emph{est} lui-même le rappel d'ancrage du cours ; il n'y a pas de notion industrielle nouvelle encore introduite.
+
+\noindent\textbf{Aperçu du contenu~:} pont explicite entre le formalisme \og modes de cavité / faisceaux gaussiens\fg{} déjà maîtrisé et le formalisme \og modes de guide planaire/rectangulaire\fg{} utilisé par tous les solveurs du cours (FDTD/EME/FEM). Introduction du vocabulaire anglais standard (\emph{effective index}, \emph{leaky mode}, \emph{form birefringence}) qui réapparaîtra sans retraduction dans les modules suivants.
+
+\noindent\textbf{Livrable prévu~:} script Python autonome traçant $n_{\text{eff}}(\lambda)$ pour un guide plan symétrique et asymétrique, réutilisé comme cas de validation dans le Module 1.
+
+\bigskip
+\hrule
+\bigskip
+
+\chapter{Électromagnétisme appliqué~: des équations de Maxwell aux formulations numériques}
+\label{chap:m0-em}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} débutant (dans le contexte industriel) \hfill
+\textbf{Position~:} Module 0, Chapitre 2 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Réécrire les équations de Maxwell sous les trois formes qui seront respectivement à la base de FDTD (formulation temporelle, rotationnels couplés E/H), EME (formulation modale/harmonique, propagation par matrices S) et FEM (formulation faible/variationnelle).
+  \item \textbf{[Théorique]} Expliquer pourquoi un même problème physique (mode d'un guide) admet trois formulations numériques différentes et quels compromis (temps, mémoire, généralité géométrique) en découlent.
+  \item \textbf{[Théorique]} Relier la notion de condition aux limites absorbante (PML) à un concept déjà connu~: l'apodisation/l'absorption en bord de cavité pour éviter les réflexions parasites.
+  \item \textbf{[Pratique]} Identifier dans un fichier de configuration Meep/Lumerical à quelle équation/formulation correspond chaque bloc (source, milieu, moniteur, condition aux limites).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m0-optique} (modes, $n_{\text{eff}}$); équations de Maxwell macroscopiques — acquis de thèse.\\
+\textbf{Outils/logiciels~:} aucun nouveau ; lecture de fichiers de configuration à titre d'illustration uniquement (pas encore d'exécution).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} aucun solveur exécuté dans ce chapitre — chapitre de mise en carte conceptuelle avant l'entrée en matière outillée du Module~1.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} oui, court encart sur les conditions aux limites absorbantes (PML), formulé comme extension du concept d'apodisation de cavité déjà connu, avant sa réapparition opérationnelle en \cref{chap:m0-optique} et au Module~1.
+
+\noindent\textbf{Aperçu du contenu~:} tableau de correspondance \{formulation mathématique $\to$ méthode numérique $\to$ outil du cours\} qui servira de \og carte routière\fg{} référencée dans l'introduction de chaque module suivant.
+
+\noindent\textbf{Livrable prévu~:} tableau de correspondance (1 page) formulations/méthodes/outils, réutilisé en tête de chaque module 1 à 3.
+
+\bigskip
+\hrule
+\bigskip
+
+\chapter{Plateformes matériaux de la photonique intégrée~: SOI, SiN, InP}
+\label{chap:m0-materiaux}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} débutant (dans le contexte industriel) \hfill
+\textbf{Position~:} Module 0, Chapitre 3 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Comparer les contrastes d'indice, fenêtres de transparence et non-linéarités des plateformes SOI (silicium sur isolant), SiN (nitrure de silicium) et InP (semi-conducteurs III-V actifs).
+  \item \textbf{[Théorique]} Relier le choix de plateforme aux contraintes physiques déjà connues (dispersion, biréfringence, seuils de dommage/non-linéarité) et à des compromis applicatifs (pertes vs intégration active).
+  \item \textbf{[Pratique]} Lire une fiche technique de plateforme (\emph{stack} de couches, épaisseurs, indices) telle que fournie typiquement par une fonderie, et en extraire les paramètres nécessaires à une première simulation.
+  \item \textbf{[Pratique]} Construire en Python une table de dispersion matériau ($n(\lambda)$, modèle de Sellmeier) pour Si, SiN et SiO$_2$, réutilisable dans tous les modules suivants.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m0-optique,chap:m0-em}; notions de dispersion chromatique et de non-linéarité optique — acquis de thèse pour la partie physique, à raccrocher au vocabulaire fonderie.\\
+\textbf{Outils/logiciels~:} Python/NumPy/SciPy (modèles de Sellmeier).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Python/SciPy (open source) pour les modèles de dispersion ; mention des bases de données d'indices usuelles (refractiveindex.info) comme ressource externe.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} oui, court rappel sur les modèles de Sellmeier/Cauchy si non pratiqués depuis la thèse, formulé comme extension directe des notions de dispersion de matériaux laser déjà connues.
+
+\noindent\textbf{Aperçu du contenu~:} présentation comparative structurée (tableau) SOI/SiN/InP~: contraste d'indice, pertes typiques, budget thermique, disponibilité fonderie (MPW), compatibilité CMOS — première introduction explicite du vocabulaire fonderie qui sera approfondi au Module~6.
+
+\noindent\textbf{Livrable prévu~:} module Python \texttt{materiaux.py} (fonctions de dispersion Si/SiN/SiO$_2$) importé par les scripts de simulation des Modules 1 à 4.
+
+\bigskip
+\hrule
+\bigskip
+
+\chapter{Panorama des méthodes numériques et de l'écosystème logiciel}
+\label{chap:m0-panorama}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} débutant (dans le contexte industriel) \hfill
+\textbf{Position~:} Module 0, Chapitre 4 sur 4
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Positionner FDTD, EME, FEM et BPM (\emph{Beam Propagation Method}) les unes par rapport aux autres selon le type de problème résolu (propagation large bande vs modale, géométries invariantes vs quelconques).
+  \item \textbf{[Pratique]} Cartographier l'écosystème logiciel du cours~: outils open source (Meep, scikit-fem/FEniCS, gdsfactory, KLayout) et outils commerciaux (Lumerical FDTD/MODE/INTERCONNECT/DEVICE, IPKISS, RSoft), avec statut de licence.
+  \item \textbf{[Pratique]} Installer et valider un environnement Python de base commun à tout le cours (gestion d'environnement virtuel, dépendances scientifiques).
+  \item \textbf{[Pratique]} Anticiper les besoins de licence académique/essai pour les outils commerciaux mobilisés dès le Module~4.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m0-em} (tableau de correspondance formulations/méthodes).\\
+\textbf{Outils/logiciels~:} Python $\geq$ 3.10, gestionnaire d'environnement (conda ou venv) ; à ce stade, aucune licence commerciale requise.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} vue d'ensemble uniquement — Meep (open source, MIT), scikit-fem/FEniCS (open source), gdsfactory/KLayout (open source), Lumerical/IPKISS/RSoft (commerciaux, licence académique ou essai à demander en amont du Module~4).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} tableau de décision \og quelle méthode pour quel problème\fg{} et checklist d'installation d'environnement, conçus pour être référencés (pas redupliqués) en tête de chaque module ultérieur.
+
+\noindent\textbf{Livrable prévu~:} environnement Python reproductible (\texttt{environment.yml} ou \texttt{requirements.txt}) validé par un script de test d'import de toutes les bibliothèques open source du cours.

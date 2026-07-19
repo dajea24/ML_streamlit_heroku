@@ -1,0 +1,156 @@
+% ============================================================
+% Module 5 — Layout et PDK
+% ÉTAT : PLAN.
+% ============================================================
+
+\chapter{Introduction à GDSII et aux outils de layout~: KLayout}
+\label{chap:m5-gdsii}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 5, Chapitre 1 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Décrire le format GDSII (calques/\emph{layers}, cellules, hiérarchie) comme langage commun de description géométrique entre concepteur et fonderie.
+  \item \textbf{[Pratique]} Naviguer dans KLayout~: inspection de calques, mesure de distances, navigation hiérarchique d'une cellule.
+  \item \textbf{[Pratique]} Ouvrir et annoter un fichier GDS simple (guide droit) généré à partir d'un script minimal.
+  \item \textbf{[Théorique]} Relier la notion de calque GDS à la notion de plateforme matériau (\cref{chap:m0-materiaux})~: un calque = une étape de procédé physique.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m0-materiaux}.\\
+\textbf{Outils/logiciels~:} KLayout (open source, gratuit).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} KLayout (open source).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} première confrontation explicite du cours à un fichier de layout réel, posant le vocabulaire (\emph{layer}, \emph{cell}, \emph{instance}) repris tel quel dans les chapitres gdsfactory/IPKISS suivants.
+
+\noindent\textbf{Livrable prévu~:} fichier GDS annoté (captures KLayout) d'un guide droit simple, avec table de correspondance calque $\to$ matériau/procédé.
+
+\bigskip\hrule\bigskip
+
+\chapter{gdsfactory~: composants paramétriques et génération de layout depuis Python}
+\label{chap:m5-gdsfactory}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 5, Chapitre 2 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Générer par script Python (gdsfactory) les layouts des composants déjà simulés dans le cours~: guide droit (\cref{chap:m1-guide}), coupleur directionnel (\cref{chap:m1-coupleur}), taper (\cref{chap:m2-application}).
+  \item \textbf{[Théorique]} Comprendre le principe de PCell (\emph{parametric cell}) et son intérêt pour la traçabilité géométrie $\leftrightarrow$ paramètres de simulation.
+  \item \textbf{[Pratique]} Exporter un GDS et le contrôler visuellement dans KLayout (\cref{chap:m5-gdsii}).
+  \item \textbf{[Pratique]} Organiser une bibliothèque de composants réutilisable (fonction $\to$ PCell) reprenant les dispositifs déjà validés numériquement dans les Modules 1-4.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m5-gdsii,chap:m1-guide,chap:m1-coupleur,chap:m2-application}.\\
+\textbf{Outils/logiciels~:} gdsfactory (open source, Python), KLayout.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} gdsfactory (open source).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} bascule de \og géométrie décrite dans le solveur de simulation\fg{} à \og géométrie décrite comme artefact fonderie autonome\fg{}, condition nécessaire au tape-out du Module~6.
+
+\noindent\textbf{Livrable prévu~:} bibliothèque gdsfactory (PCells guide droit, coupleur, taper) + GDS exportés, réutilisés au \cref{chap:m5-drc}.
+
+\bigskip\hrule\bigskip
+
+\chapter{IPKISS~: modélisation paramétrique et co-simulation layout/circuit}
+\label{chap:m5-ipkiss}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 5, Chapitre 3 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Décrire un composant en IPKISS en couplant description géométrique (layout) et modèle de simulation (circuit-level) dans un même objet Python.
+  \item \textbf{[Théorique]} Comparer l'approche IPKISS (layout et modèle co-définis) à l'approche gdsfactory + Lumerical vue séparément dans les chapitres précédents (flot découplé).
+  \item \textbf{[Pratique]} Reconstruire le MZI simple du \cref{chap:m4-interconnect} en IPKISS et vérifier la cohérence layout/S-paramètres.
+  \item \textbf{[Théorique]} Situer IPKISS parmi les outils commerciaux de PDA (\emph{Photonic Design Automation}) et anticiper son rôle dans un flot fonderie complet (Module~6).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m5-gdsfactory,chap:m4-interconnect}.\\
+\textbf{Outils/logiciels~:} IPKISS (commercial, licence académique à anticiper).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} IPKISS (commercial) ; équivalent open source déjà vu~: gdsfactory (\cref{chap:m5-gdsfactory}) pour la partie layout.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} chapitre de transfert de compétence gdsfactory $\to$ IPKISS, sur le modèle du transfert Meep $\to$ Lumerical déjà pratiqué au \cref{chap:m4-fdtd-lumerical}.
+
+\noindent\textbf{Livrable prévu~:} composant IPKISS du MZI (layout + modèle) + comparaison de la réponse spectrale à celle obtenue en INTERCONNECT (\cref{chap:m4-interconnect}).
+
+\bigskip\hrule\bigskip
+
+\chapter{Règles de conception fonderie~: design rules et DRC photonique}
+\label{chap:m5-drc}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 5, Chapitre 4 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Définir les catégories usuelles de règles de conception (largeur minimale, gap minimal, densité de calque, tolérance de lithographie) et leur origine physique (résolution du procédé de gravure/lithographie).
+  \item \textbf{[Pratique]} Exécuter une vérification DRC (\emph{Design Rule Check}) photonique sur les layouts gdsfactory du \cref{chap:m5-gdsfactory} avec KLayout.
+  \item \textbf{[Pratique]} Corriger un layout en violation de DRC (ex. gap de coupleur directionnel du \cref{chap:m1-coupleur} trop faible pour la résolution du PDK) et évaluer l'impact sur la performance simulée.
+  \item \textbf{[Théorique]} Relier une règle de conception à la tolérance de fabrication déjà quantifiée au \cref{chap:m4-tolerance} — même contrainte physique vue sous deux angles (statistique vs binaire pass/fail).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m5-gdsfactory,chap:m4-tolerance}.\\
+\textbf{Outils/logiciels~:} KLayout (moteur DRC), fichier de règles DRC (\texttt{.lydrc}) d'un PDK académique/open.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} KLayout DRC (open source).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} premier chapitre du cours où une contrainte fonderie devient un verdict binaire (pass/fail) et non plus seulement une recommandation issue d'une analyse de sensibilité.
+
+\begin{flotfonderie}
+Aperçu (à détailler en rédaction complète)~: exemple chiffré (largeur minimale de guide, gap minimal entre guides, tolérance de lithographie typiques d'un PDK MPW) et son impact direct sur le coupleur directionnel du \cref{chap:m1-coupleur}.
+\end{flotfonderie}
+
+\noindent\textbf{Livrable prévu~:} rapport DRC (avant/après correction) du coupleur directionnel + note expliquant l'origine physique de chaque règle violée.
+
+\bigskip\hrule\bigskip
+
+\chapter{Vérification LVS photonique et cohérence layout/schématique}
+\label{chap:m5-lvs}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 5, Chapitre 5 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Transposer le concept de LVS (\emph{Layout Versus Schematic}) de la microélectronique à la photonique~: vérifier que le layout GDS correspond bien au circuit INTERCONNECT/IPKISS prévu (connectivité des guides, identité des composants).
+  \item \textbf{[Pratique]} Réaliser une vérification LVS photonique (outillage SiEPIC-Tools ou équivalent) sur le MZI du \cref{chap:m5-ipkiss}.
+  \item \textbf{[Pratique]} Diagnostiquer une erreur de connectivité typique (guide non jointif, composant mal instancié) introduite volontairement pour l'exercice.
+  \item \textbf{[Théorique]} Positionner DRC et LVS comme les deux vérifications obligatoires avant tout dossier de soumission fonderie (transition vers le Module~6).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m5-drc,chap:m5-ipkiss}.\\
+\textbf{Outils/logiciels~:} SiEPIC-Tools (extension KLayout, open source) ou équivalent disponible.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} SiEPIC-Tools / KLayout (open source).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} clôture du Module~5 sur un flot de vérification complet (DRC + LVS), prérequis direct du dossier de soumission MPW traité au \cref{chap:m6-mpw}.
+
+\noindent\textbf{Livrable prévu~:} rapport LVS du MZI (avec une erreur de connectivité corrigée) + checklist de vérification pré-soumission (DRC + LVS) réutilisée au Module~6.

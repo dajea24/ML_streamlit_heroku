@@ -1,0 +1,152 @@
+% ============================================================
+% Module 1 — FDTD open source (Meep)
+% ÉTAT : PLAN.
+% ============================================================
+
+\chapter{Principes de la méthode FDTD~: schéma de Yee, stabilité, PML}
+\label{chap:m1-principes}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} débutant \hfill \textbf{Position~:} Module 1, Chapitre 1 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Dériver le schéma de discrétisation de Yee (grille décalée E/H) à partir des équations de Maxwell temporelles présentées en \cref{chap:m0-em}.
+  \item \textbf{[Théorique]} Établir la condition de stabilité de Courant-Friedrichs-Lewy (CFL) et en déduire l'impact du pas spatial sur le pas temporel.
+  \item \textbf{[Théorique]} Justifier physiquement le rôle des couches PML (\emph{Perfectly Matched Layer}) en s'appuyant sur le rappel d'apodisation introduit en \cref{chap:m0-em}.
+  \item \textbf{[Pratique]} Traduire un choix de résolution spatiale (mailles/longueur d'onde) en coût mémoire et temps de calcul estimés, à la main, avant toute exécution.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m0-em} (formulation temporelle de Maxwell, PML); \cref{chap:m0-optique} (modes guidés).\\
+\textbf{Outils/logiciels~:} aucun encore ; chapitre principalement analytique/numérique \og à la main\fg{}.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} aucun solveur ; calculs de dimensionnement en Python/NumPy.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non (le rappel PML a déjà été placé en \cref{chap:m0-em}).
+
+\noindent\textbf{Aperçu du contenu~:} construction pas à pas du schéma de Yee 1D puis 2D, analyse de dispersion numérique (différence entre vitesse de phase discrète et continue) — point de vigilance repris dans l'exercice diagnostic du \cref{chap:m1-guide}.
+
+\noindent\textbf{Livrable prévu~:} note de dimensionnement (résolution, pas de temps, épaisseur PML) pour le cas guide droit qui sera simulé au \cref{chap:m1-guide}.
+
+\bigskip\hrule\bigskip
+
+\chapter{Prise en main de Meep~: installation, scripts Python, unités normalisées}
+\label{chap:m1-meep}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} débutant \hfill \textbf{Position~:} Module 1, Chapitre 2 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Installer Meep (via conda-forge) et valider l'installation par un script minimal.
+  \item \textbf{[Théorique]} Convertir entre unités physiques (SI) et unités normalisées de Meep ($a$, $c=1$), source classique d'erreur pour un nouvel utilisateur.
+  \item \textbf{[Pratique]} Construire les objets de base d'une simulation Meep~: \texttt{Simulation}, \texttt{Medium}, \texttt{Source}, \texttt{Monitor/Volume}.
+  \item \textbf{[Pratique]} Exécuter une première simulation \og jouet\fg{} (résonateur 2D) et visualiser les champs avec Matplotlib.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m1-principes}.\\
+\textbf{Outils/logiciels~:} Meep $\geq$ 1.27 (conda-forge), h5py, Matplotlib.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Meep (open source, GPL).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} oui, court encart sur le système d'unités normalisées (analogie avec les unités \og naturelles\fg{} parfois utilisées en physique laser/optique non linéaire).
+
+\noindent\textbf{Aperçu du contenu~:} tutoriel guidé d'installation et de première simulation, calé sur l'exemple canonique Meep (résonateur) mais reformulé pour l'objectif final du module (guide droit).
+
+\noindent\textbf{Livrable prévu~:} environnement Meep fonctionnel + script \texttt{hello\_meep.py} exécuté avec succès (figure de champ en sortie).
+
+\bigskip\hrule\bigskip
+
+\chapter{Simulation d'un guide droit~: validation de $n_{\text{eff}}$ et des pertes}
+\label{chap:m1-guide}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 1, Chapitre 3 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Construire en Meep un guide droit rectangulaire (plateforme SOI, cf. \cref{chap:m0-materiaux}) avec source modale et moniteurs de flux.
+  \item \textbf{[Théorique]} Extraire $n_{\text{eff}}$ à partir d'une simulation FDTD (analyse de phase ou comparaison à la solution analytique du \cref{chap:m0-optique}) et discuter les sources d'écart.
+  \item \textbf{[Pratique]} Quantifier les pertes de propagation numériques et les distinguer des pertes physiques (rugosité non modélisée à ce stade).
+  \item \textbf{[Théorique]} Diagnostiquer un écart de résultat lié à un sous-échantillonnage spatial (lien direct avec la dispersion numérique du \cref{chap:m1-principes}).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m1-principes,chap:m0-optique,chap:m0-materiaux}.\\
+\textbf{Outils/logiciels~:} Meep, script \texttt{materiaux.py} du \cref{chap:m0-materiaux}.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Meep.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} ce chapitre fournit le cas de référence \og guide droit\fg{} qui sera repris à l'identique en Lumerical FDTD au \cref{chap:m4-fdtd-lumerical}, pour une comparaison directe outil open source / outil commercial.
+
+\noindent\textbf{Livrable prévu~:} script \texttt{guide\_droit\_meep.py} + figure $n_{\text{eff}}$ simulé vs analytique + tableau d'écart relatif, réutilisés comme référence de validation au Module~4.
+
+\bigskip\hrule\bigskip
+
+\chapter{Coupleurs directionnels~: simulation et étude paramétrique}
+\label{chap:m1-coupleur}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 1, Chapitre 4 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Relier le couplage entre guides voisins à la théorie des modes couplés, en s'appuyant sur l'analogie avec le couplage entre cavités/modes de fibres jumelles.
+  \item \textbf{[Pratique]} Construire un coupleur directionnel en Meep et balayer la longueur de couplage pour retrouver la longueur de battement $L_\pi$.
+  \item \textbf{[Pratique]} Automatiser un balayage paramétrique (gap, longueur) en Python et tracer le taux de couplage résultant.
+  \item \textbf{[Théorique]} Relier la sensibilité du couplage au gap à une première contrainte de fabrication (tolérance de lithographie), annonçant le \cref{chap:m1-postraitement}.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m1-guide}; théorie des modes couplés — notion à rappeler brièvement si non pratiquée depuis la thèse.\\
+\textbf{Outils/logiciels~:} Meep, NumPy pour le post-traitement du balayage.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Meep.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} oui, court encart sur la théorie des modes couplés (CMT), formulé comme extension de la théorie des cavités couplées déjà connue.
+
+\noindent\textbf{Aperçu du contenu~:} étude paramétrique automatisée servant de gabarit méthodologique repris tel quel avec l'API \texttt{lumapi} au \cref{chap:m4-api}.
+
+\noindent\textbf{Livrable prévu~:} courbe taux de couplage vs longueur/gap + valeur de $L_\pi$ extraite, avec code de balayage réutilisable.
+
+\bigskip\hrule\bigskip
+
+\chapter{Sources, moniteurs et post-traitement~: S-paramètres et spectres}
+\label{chap:m1-postraitement}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 1, Chapitre 5 sur 5
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Définir les S-paramètres d'un composant photonique par analogie avec les paramètres de transmission/réflexion déjà connus en optique (matrices ABCD, coefficients de Fresnel).
+  \item \textbf{[Pratique]} Extraire un spectre large bande en une seule simulation FDTD (source impulsionnelle + transformée de Fourier des moniteurs de flux).
+  \item \textbf{[Pratique]} Normaliser correctement un spectre (simulation de référence sans dispositif) — erreur fréquente de débutant.
+  \item \textbf{[Pratique]} Produire une figure de spectre publiable (échelle dB, légende, bande utile) qui servira de format standard pour tout le reste du cours.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m1-coupleur}; notion de coefficients de transmission/réflexion — acquis de thèse.\\
+\textbf{Outils/logiciels~:} Meep, h5py, Matplotlib.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Meep.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} ce chapitre fixe le format standard de figure spectrale (dB, bande utile, normalisation) réutilisé sans redéfinition dans les Modules 2 à 4 ; clôt le Module~1 sur le cas coupleur directionnel entièrement caractérisé.
+
+\noindent\textbf{Livrable prévu~:} fonction Python \texttt{plot\_spectrum()} réutilisable + spectre de transmission normalisé du coupleur directionnel du \cref{chap:m1-coupleur}, clôturant le portfolio du Module~1.

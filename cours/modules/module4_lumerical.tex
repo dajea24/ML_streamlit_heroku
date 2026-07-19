@@ -1,0 +1,250 @@
+% ============================================================
+% Module 4 — Ansys Lumerical pour le PIC design
+% ÉTAT : PLAN.
+% Module autonome dédié à la suite Lumerical (outil quasi-standard
+% de l'industrie), avec sa propre progression débutant -> avancé
+% au sein de l'outil, indépendamment du niveau théorique déjà
+% couvert par les Modules 1-3.
+% ============================================================
+
+\chapter{Prise en main de l'interface Lumerical}
+\label{chap:m4-interface}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} débutant (dans l'outil) \hfill \textbf{Position~:} Module 4, Chapitre 1 sur 8
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Naviguer dans l'interface CAD Lumerical~: hiérarchie de simulation, objets de structure, objets de simulation, objets d'analyse.
+  \item \textbf{[Pratique]} Distinguer les produits de la suite (FDTD Solutions, MODE Solutions, INTERCONNECT, DEVICE) et leur rôle respectif dans un flot de conception PIC.
+  \item \textbf{[Pratique]} Identifier le modèle de licence (FlexLM, licences flottantes/nommées) et anticiper une demande de licence académique ou d'essai.
+  \item \textbf{[Théorique]} Relier chaque produit Lumerical à la méthode numérique sous-jacente déjà vue (FDTD Solutions $\leftrightarrow$ Module 1, MODE/EME $\leftrightarrow$ Module 2, DEVICE $\leftrightarrow$ FEM du Module 3).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m0-panorama} (tableau outils/méthodes).\\
+\textbf{Outils/logiciels~:} Ansys Lumerical (licence académique ou essai à obtenir avant ce chapitre — délai à anticiper, cf. remarque de planification en tête de module).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Ansys Lumerical (commercial ; licence académique/essai nécessaire).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} visite guidée de l'interface avec vocabulaire anglais standard (\emph{simulation region}, \emph{mesh override}, \emph{monitor}), posant le socle commun aux \cref{chap:m4-fdtd-lumerical,chap:m4-mode}.
+
+\noindent\textbf{Livrable prévu~:} note de configuration de l'environnement Lumerical (licence, version, chemin d'installation) + capture d'écran annotée de la hiérarchie de simulation.
+
+\bigskip\hrule\bigskip
+
+\chapter{FDTD Solutions~: reconstruire le guide droit et le coupleur directionnel}
+\label{chap:m4-fdtd-lumerical}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} débutant $\to$ intermédiaire \hfill \textbf{Position~:} Module 4, Chapitre 2 sur 8
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Reconstruire dans FDTD Solutions le guide droit du \cref{chap:m1-guide} et le coupleur directionnel du \cref{chap:m1-coupleur}.
+  \item \textbf{[Pratique]} Comparer directement $n_{\text{eff}}$, pertes et taux de couplage obtenus en Lumerical FDTD à ceux obtenus en Meep, en quantifiant les écarts.
+  \item \textbf{[Théorique]} Expliquer les différences de paramétrage entre Meep et FDTD Solutions (maillage automatique vs manuel, \emph{mesh override regions}, PML avancées) pour un même schéma numérique sous-jacent.
+  \item \textbf{[Pratique]} Identifier, sur un résultat divergent, si l'écart provient du maillage, de la définition matériau, ou d'une différence de convention (première mise en pratique du réflexe diagnostic).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m1-guide,chap:m1-coupleur}; \cref{chap:m4-interface}.\\
+\textbf{Outils/logiciels~:} Lumerical FDTD Solutions.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Lumerical FDTD Solutions (commercial) ; équivalent open source déjà vu~: Meep (\cref{chap:m1-meep}).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} chapitre de \og transfert de compétence\fg{} explicite Meep $\to$ Lumerical, sur des cas déjà maîtrisés, pour isoler l'apprentissage de l'outil de l'apprentissage de la physique.
+
+\noindent\textbf{Livrable prévu~:} tableau comparatif Meep vs Lumerical FDTD ($n_{\text{eff}}$, pertes, $L_\pi$) sur les deux cas de référence du Module~1.
+
+\bigskip\hrule\bigskip
+
+\chapter{MODE Solutions / solveur EME~: analyse modale, dispersion, tapers}
+\label{chap:m4-mode}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 4, Chapitre 3 sur 8
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Utiliser le solveur modal FDE (\emph{Finite Difference Eigenmode}) de MODE Solutions et le solveur EME associé.
+  \item \textbf{[Pratique]} Calculer la courbe de dispersion $n_{\text{eff}}(\lambda)$ d'un guide et la comparer à celle obtenue analytiquement (\cref{chap:m0-optique}) et en FEM (\cref{chap:m3-outils}).
+  \item \textbf{[Pratique]} Reconstruire le taper adiabatique du \cref{chap:m2-application} dans le solveur EME de MODE Solutions et comparer les pertes de conversion.
+  \item \textbf{[Théorique]} Expliquer pourquoi MODE Solutions utilise un solveur FDE (et non FEM) pour l'analyse modale, en revenant sur le tableau de correspondance du \cref{chap:m0-panorama}.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m2-application,chap:m3-outils}; \cref{chap:m4-interface}.\\
+\textbf{Outils/logiciels~:} Lumerical MODE Solutions.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Lumerical MODE Solutions (commercial) ; équivalent open source déjà vu~: solveur EME du Module~2 et solveur FEM du Module~3.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} triangulation à trois termes (EME open source / FEM open source / MODE Solutions) sur le cas taper, consolidant la confiance de l'étudiant dans les résultats commerciaux via des résultats déjà validés en open source.
+
+\noindent\textbf{Livrable prévu~:} courbe de dispersion + tableau comparatif pertes de taper (EME open source vs MODE Solutions).
+
+\bigskip\hrule\bigskip
+
+\chapter{Automatisation avec l'API Python Lumerical (\texttt{lumapi})}
+\label{chap:m4-api}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 4, Chapitre 4 sur 8
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Piloter Lumerical FDTD/MODE depuis Python via \texttt{lumapi} au lieu de l'interface graphique.
+  \item \textbf{[Pratique]} Reproduire par script le balayage paramétrique gap/longueur du coupleur directionnel (\cref{chap:m1-coupleur}), cette fois en Lumerical, en réutilisant le même gabarit méthodologique.
+  \item \textbf{[Pratique]} Extraire automatiquement des résultats (S-paramètres, champs) vers des structures NumPy pour post-traitement unifié avec le reste du cours.
+  \item \textbf{[Théorique]} Discuter l'intérêt de l'automatisation pour l'optimisation et l'analyse de tolérance, en préparation du \cref{chap:m4-tolerance}.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m1-coupleur,chap:m4-fdtd-lumerical}.\\
+\textbf{Outils/logiciels~:} Lumerical + module Python \texttt{lumapi} (fourni avec l'installation Lumerical), Python $\geq$ 3.10.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Lumerical \texttt{lumapi} (commercial, API Python).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} bascule du \og tout interface graphique\fg{} vers un flot scriptable, condition nécessaire aux chapitres avancés du module (tolérance, PDK).
+
+\noindent\textbf{Livrable prévu~:} script \texttt{lumapi} de balayage automatisé (gap/longueur) + jeu de données exporté, réutilisé au \cref{chap:m4-tolerance}.
+
+\bigskip\hrule\bigskip
+
+\chapter{INTERCONNECT~: simulation circuit-level et assemblage de composants}
+\label{chap:m4-interconnect}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire $\to$ avancé \hfill \textbf{Position~:} Module 4, Chapitre 5 sur 8
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Distinguer simulation \emph{device-level} (champ électromagnétique complet, FDTD/MODE) et simulation \emph{circuit-level} (composants réduits à des modèles compacts/S-paramètres) — analogie avec le passage optique physique $\to$ schéma optique en physique laser.
+  \item \textbf{[Pratique]} Assembler dans INTERCONNECT un circuit simple (interféromètre de Mach-Zehnder) à partir des S-paramètres extraits en FDTD/MODE dans les chapitres précédents.
+  \item \textbf{[Pratique]} Comparer la réponse spectrale obtenue circuit-level à une simulation device-level complète (quand elle est encore tractable) pour valider la méthode.
+  \item \textbf{[Théorique]} Justifier pourquoi le circuit-level devient indispensable dès que le nombre de composants augmente (limite pratique du device-level).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m4-fdtd-lumerical,chap:m4-mode,chap:m1-postraitement} (format standard de spectre).\\
+\textbf{Outils/logiciels~:} Lumerical INTERCONNECT.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Lumerical INTERCONNECT (commercial).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} premier exemple complet de \emph{co-design flow} device $\to$ circuit du cours, préfigurant le mini-projet du \cref{chap:m4-projet}.
+
+\noindent\textbf{Livrable prévu~:} circuit INTERCONNECT d'un MZI simple + spectre de transmission comparé device-level vs circuit-level.
+
+\bigskip\hrule\bigskip
+
+\chapter{Import/export de PDK fonderie dans Lumerical}
+\label{chap:m4-pdk}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 4, Chapitre 6 sur 8
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Importer un PDK photonique (open ou académique, ex. PDK d'une fonderie MPW type AIM Photonics/imec/CORNERSTONE selon disponibilité) dans l'environnement Lumerical.
+  \item \textbf{[Théorique]} Distinguer composant \og fait maison\fg{} (simulé de A à Z, Modules 1-3) et composant \og PDK\fg{} (pré-caractérisé, modèle compact fourni par la fonderie).
+  \item \textbf{[Pratique]} Utiliser un composant pré-caractérisé du PDK dans un circuit INTERCONNECT (\cref{chap:m4-interconnect}) sans le resimuler intégralement.
+  \item \textbf{[Théorique]} Identifier les contraintes de design imposées par le PDK (couches disponibles, largeurs/gaps minimaux) et leur impact sur les choix déjà faits dans le cours (ex. gap du coupleur du \cref{chap:m1-coupleur}).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m4-interconnect}; \cref{chap:m0-materiaux} (vocabulaire fonderie).\\
+\textbf{Outils/logiciels~:} Lumerical + kit PDK compatible (accès à confirmer selon disponibilité académique).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Lumerical + PDK fonderie (accès nécessitant généralement un accord de confidentialité/licence académique, à anticiper).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} oui, encart de vocabulaire fonderie (PDK, \emph{compact model}, \emph{process design kit}) formulé pour un public qui découvre ce jargon pour la première fois.
+
+\noindent\textbf{Aperçu du contenu~:} bascule explicite du \og monde simulation académique\fg{} vers le \og monde fonderie industrielle\fg{}, articulée avec le Module~5 (layout/PDK) et le Module~6 (interaction fonderie).
+
+\begin{flotfonderie}
+Aperçu (à détailler en rédaction complète)~: chaîne complète composant PDK $\to$ modèle compact $\to$ circuit INTERCONNECT $\to$ contrainte de design en retour sur le layout (annonce du Module~5).
+\end{flotfonderie}
+
+\noindent\textbf{Livrable prévu~:} circuit INTERCONNECT utilisant au moins un composant PDK pré-caractérisé + note listant les contraintes de design extraites du PDK utilisé.
+
+\bigskip\hrule\bigskip
+
+\chapter{Optimisation et analyse de tolérance}
+\label{chap:m4-tolerance}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 4, Chapitre 7 sur 8
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Formaliser la notion de tolérance de fabrication (variation de largeur/épaisseur/indice autour d'une valeur nominale) et son impact statistique sur la performance d'un dispositif.
+  \item \textbf{[Pratique]} Utiliser l'outil \emph{sweep/optimization} de Lumerical (ou un script maison via \texttt{lumapi}, cf. \cref{chap:m4-api}) pour explorer l'espace des variations de fabrication du coupleur directionnel.
+  \item \textbf{[Pratique]} Produire une analyse de sensibilité (\emph{corner analysis} ou Monte-Carlo simplifié) et en déduire une marge de conception recommandée.
+  \item \textbf{[Théorique]} Relier cette analyse à un exercice diagnostic type~: à partir d'un dispositif mesuré hors spécification, remonter à la variation de procédé la plus probable.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m4-api,chap:m1-coupleur}.\\
+\textbf{Outils/logiciels~:} Lumerical (module \emph{optimization/sweep}) ou script \texttt{lumapi} maison.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} Lumerical \emph{sweep/optimization} + \texttt{lumapi} (commercial).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} chapitre charnière entre simulation \og idéale\fg{} et réalité de fabrication, préparant directement les design rules du Module~5 et le retour mesure$\to$design du Module~6.
+
+\noindent\textbf{Livrable prévu~:} carte de sensibilité performance vs variation de procédé (gap, largeur) + marge de conception recommandée, avec justification chiffrée.
+
+\bigskip\hrule\bigskip
+
+\chapter{Mini-projet Lumerical de synthèse}
+\label{chap:m4-projet}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 4, Chapitre 8 sur 8
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Concevoir un dispositif complet (MZI thermo-optique ou multiplexeur simple) en combinant FDTD, MODE et INTERCONNECT.
+  \item \textbf{[Pratique]} Intégrer une analyse de tolérance (\cref{chap:m4-tolerance}) dans la validation finale du dispositif.
+  \item \textbf{[Pratique]} Rédiger une note technique de validation au format attendu d'un ingénieur PIC (hypothèses, résultats, marges, limites).
+  \item \textbf{[Théorique]} Faire la synthèse critique des trois méthodes numériques du cours (FDTD/EME/FEM) telles qu'utilisées dans ce projet.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} l'ensemble du Module~4 (\cref{chap:m4-interface,chap:m4-fdtd-lumerical,chap:m4-mode,chap:m4-api,chap:m4-interconnect,chap:m4-pdk,chap:m4-tolerance}).\\
+\textbf{Outils/logiciels~:} Lumerical FDTD, MODE, INTERCONNECT, \texttt{lumapi}.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} suite Lumerical complète (commercial).
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} projet de synthèse intra-module, distinct du projet de synthèse final du cours (\cref{chap:m7-cahier-des-charges} et suivants) qui, lui, mobilisera en plus le layout/PDK (Module~5) et le flot fonderie (Module~6).
+
+\noindent\textbf{Livrable prévu~:} note technique de validation complète (portfolio) du dispositif conçu, format réutilisable comme modèle pour le projet de synthèse final du Module~7.

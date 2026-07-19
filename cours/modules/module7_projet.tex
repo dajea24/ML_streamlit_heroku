@@ -1,0 +1,92 @@
+% ============================================================
+% Module 7 — Projet de synthèse
+% ÉTAT : PLAN.
+% ============================================================
+
+\chapter{Cahier des charges d'un dispositif complet}
+\label{chap:m7-cahier-des-charges}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 7, Chapitre 1 sur 3
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Rédiger un cahier des charges technique complet pour un dispositif de synthèse (choix proposé~: MZI thermo-optique reconfigurable \emph{ou} (dé)multiplexeur WDM 2 canaux — à trancher en tête de chapitre selon l'équilibre théorie/pratique visé).
+  \item \textbf{[Théorique]} Décomposer le dispositif choisi en sous-composants déjà maîtrisés individuellement dans le cours (guide, coupleur/MZI, taper, éventuellement élément thermo-optique du \cref{chap:m3-multiphysique}).
+  \item \textbf{[Pratique]} Définir des spécifications quantitatives mesurables (bande passante, extinction, pertes d'insertion, budget de longueur imposé par le PDK) servant de critère d'acceptation final.
+  \item \textbf{[Théorique]} Identifier, pour chaque spécification, quelle méthode du cours (FDTD/EME/FEM/circuit-level) est la mieux adaptée pour la vérifier.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} l'ensemble des Modules 0 à 6 (chapitre de synthèse).\\
+\textbf{Outils/logiciels~:} aucun nouveau ; chapitre de cadrage méthodologique.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} aucun — production d'un document de spécification.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} chapitre d'entrée du projet final, conçu comme exercice de \og traduction\fg{} d'un besoin fonctionnel en plan de simulation multi-outils, compétence transversale visée par l'ensemble du cours.
+
+\noindent\textbf{Livrable prévu~:} cahier des charges rédigé (spécifications quantitatives + plan de vérification par méthode), validé avant simulation au \cref{chap:m7-simulation}.
+
+\bigskip\hrule\bigskip
+
+\chapter{Simulation multi-outils intégrée et validation croisée}
+\label{chap:m7-simulation}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 7, Chapitre 2 sur 3
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Simuler chaque sous-composant du dispositif avec l'outil le plus approprié (FDTD pour la validation locale, EME/MODE pour les tapers, FEM pour un cas géométrique complexe si pertinent, circuit-level pour l'assemblage final).
+  \item \textbf{[Pratique]} Assembler les résultats en un circuit INTERCONNECT/IPKISS complet (\cref{chap:m4-interconnect,chap:m5-ipkiss}) et vérifier la conformité aux spécifications du \cref{chap:m7-cahier-des-charges}.
+  \item \textbf{[Pratique]} Intégrer une analyse de tolérance (\cref{chap:m4-tolerance}) et une vérification DRC/LVS (\cref{chap:m5-drc,chap:m5-lvs}) dans la validation finale.
+  \item \textbf{[Théorique]} Documenter les écarts entre méthodes lorsqu'ils apparaissent, en s'appuyant sur les réflexes diagnostiques développés tout au long du cours.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m7-cahier-des-charges} et l'ensemble des outils du cours (Modules 1 à 5).\\
+\textbf{Outils/logiciels~:} Meep, Lumerical (FDTD/MODE/INTERCONNECT), gdsfactory/IPKISS, KLayout — sélection selon les choix du \cref{chap:m7-cahier-des-charges}.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} l'ensemble de la boîte à outils du cours, mobilisée simultanément pour la première fois.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} cœur pratique du projet de synthèse~; chapitre le plus long du Module~7, organisé sous-composant par sous-composant puis assemblage final, à l'image de la structure \og mise en place $\to$ paramètres $\to$ exécution $\to$ extraction $\to$ interprétation\fg{} employée dans tout le cours.
+
+\noindent\textbf{Livrable prévu~:} dossier de simulation complet du dispositif (tous sous-composants + assemblage circuit-level + vérifications DRC/LVS/tolérance), prêt pour rédaction de la note finale.
+
+\bigskip\hrule\bigskip
+
+\chapter{Note d'application finale et portfolio technique}
+\label{chap:m7-note-finale}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} avancé \hfill \textbf{Position~:} Module 7, Chapitre 3 sur 3
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Pratique]} Rédiger une note d'application technique complète (format proche d'une \emph{application note} industrielle)~: contexte, méthode, résultats, marges, limites, recommandations.
+  \item \textbf{[Pratique]} Assembler l'ensemble des livrables du cours (Modules 0 à 7) en un portfolio technique cohérent, démontrant la maîtrise du flot simulation $\to$ layout $\to$ fonderie.
+  \item \textbf{[Théorique]} Réaliser une synthèse critique personnelle~: pour chaque méthode (FDTD/EME/FEM) et chaque outil (Meep/Lumerical/IPKISS/gdsfactory/KLayout), formuler en une phrase son cas d'usage optimal.
+  \item \textbf{[Théorique]} Identifier, en conclusion, les sujets hors périmètre du cours qui constitueraient une suite logique (ex. photonique non linéaire intégrée, calcul quantique photonique, co-intégration électronique-photonique avancée).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m7-simulation}.\\
+\textbf{Outils/logiciels~:} aucun nouveau ; chapitre de rédaction et de synthèse.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} aucun — production documentaire finale.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} chapitre de clôture du cours, sans contenu théorique nouveau, entièrement dédié à la consolidation et à la valorisation (portfolio) des livrables produits depuis le Module~0.
+
+\noindent\textbf{Livrable prévu~:} note d'application finale complète + portfolio technique consolidé (tous livrables du cours), livrable ultime du cours dans son ensemble.

@@ -1,0 +1,96 @@
+% ============================================================
+% Module 2 — EME (Eigenmode Expansion)
+% ÉTAT : PLAN.
+% ============================================================
+
+\chapter{Principes de l'Eigenmode Expansion~: décomposition modale et matrices S}
+\label{chap:m2-principes}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 2, Chapitre 1 sur 3
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Formuler la propagation d'un champ comme une somme pondérée de modes propres locaux, en s'appuyant explicitement sur l'analogie avec la décomposition en modes de cavité laser déjà maîtrisée.
+  \item \textbf{[Théorique]} Construire la matrice de raccordement (\emph{mode matching}) entre deux sections de guide d'indices effectifs différents et en déduire la matrice S d'une structure segmentée.
+  \item \textbf{[Théorique]} Identifier les hypothèses de validité de l'EME (invariance longitudinale par section, base modale complète) et leurs limites.
+  \item \textbf{[Pratique]} Calculer \og à la main\fg{}, sur un cas à deux sections, le coefficient de transmission par la méthode des matrices S, avant toute utilisation d'un solveur.
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m0-optique} (modes guidés); \cref{chap:m0-em} (tableau de correspondance formulations/méthodes); matrices ABCD de l'optique gaussienne — acquis de thèse, à transposer.\\
+\textbf{Outils/logiciels~:} Python/NumPy (algèbre matricielle) uniquement à ce stade.
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} aucun solveur dédié — construction manuelle des matrices en Python pour ancrer la théorie avant l'outillage du \cref{chap:m2-vs-fdtd}.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} oui, encart reliant explicitement les matrices S de l'EME aux matrices ABCD de l'optique gaussienne déjà connues, comme changement de base conceptuel plutôt que nouveauté.
+
+\noindent\textbf{Aperçu du contenu~:} construction progressive~: un mode $\to$ deux modes $\to$ discontinuité $\to$ cascade de sections, avant généralisation aux solveurs EME du \cref{chap:m2-application}.
+
+\noindent\textbf{Livrable prévu~:} script Python de calcul de matrice S par recouvrement modal sur un cas à 2 sections (discontinuité de largeur de guide), avec comparaison à un cas limite analytique connu.
+
+\bigskip\hrule\bigskip
+
+\chapter{EME vs FDTD~: critères de choix et limites}
+\label{chap:m2-vs-fdtd}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 2, Chapitre 2 sur 3
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Établir une grille de décision EME vs FDTD selon le type de structure (invariante par section vs géométrie quelconque, longueur du dispositif, besoin de réflexions multiples).
+  \item \textbf{[Pratique]} Comparer, sur le \emph{même} guide droit déjà validé au \cref{chap:m1-guide}, le temps de calcul et la précision obtenus en EME vs FDTD.
+  \item \textbf{[Théorique]} Expliquer pourquoi l'EME est particulièrement adaptée aux structures longues et progressives (tapers) là où FDTD devient prohibitif en temps de calcul.
+  \item \textbf{[Pratique]} Diagnostiquer un cas où l'EME donne un résultat incorrect faute de nombre de modes suffisant dans la base (troncature modale).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m2-principes,chap:m1-guide}.\\
+\textbf{Outils/logiciels~:} solveur EME open source retenu pour le cours (à confirmer~: EMEpy ou combinaison solveur modal scikit-fem + propagation matricielle maison).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} solveur EME open source (Python) — choix d'outil à trancher en tête de chapitre selon maturité/maintenance au moment de la rédaction.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} tableau de décision méthodologique + benchmark chiffré temps/précision sur le cas guide droit, complétant le tableau \og quelle méthode pour quel problème\fg{} du \cref{chap:m0-panorama}.
+
+\noindent\textbf{Livrable prévu~:} tableau comparatif EME/FDTD (temps de calcul, précision, cas d'usage recommandé) sur le cas guide droit de référence.
+
+\bigskip\hrule\bigskip
+
+\chapter{Application EME~: tapers et transitions adiabatiques}
+\label{chap:m2-application}
+\etatunite{PLAN}
+
+\noindent\textbf{Niveau~:} intermédiaire \hfill \textbf{Position~:} Module 2, Chapitre 3 sur 3
+
+\begin{objectifs}
+\begin{itemize}[leftmargin=1.4em]
+  \item \textbf{[Théorique]} Définir le critère d'adiabaticité d'une transition de guide (taper) et le relier à la notion de croisement de modes évité.
+  \item \textbf{[Pratique]} Simuler en EME un taper linéaire puis un taper optimisé (parabolique) et comparer leurs pertes de conversion modale.
+  \item \textbf{[Pratique]} Réaliser un balayage de longueur de taper pour identifier la longueur minimale garantissant une conversion adiabatique sous un seuil de perte donné.
+  \item \textbf{[Théorique]} Relier la longueur de taper obtenue à une contrainte fonderie réaliste (encombrement de puce, budget de longueur imposé par un PDK).
+\end{itemize}
+\end{objectifs}
+
+\begin{prerequis}
+\textbf{Théoriques~:} \cref{chap:m2-vs-fdtd}.\\
+\textbf{Outils/logiciels~:} solveur EME retenu (cf. \cref{chap:m2-vs-fdtd}).
+\end{prerequis}
+
+\noindent\textbf{Outils principaux~:} solveur EME open source.
+
+\noindent\textbf{Rappel de mise à niveau prévu~:} non.
+
+\noindent\textbf{Aperçu du contenu~:} premier chapitre du cours à faire explicitement le lien avec une contrainte de PDK (\S \emph{Lien avec le flot fonderie}), en préparation du Module~5.
+
+\begin{flotfonderie}
+Aperçu (à détailler en rédaction complète)~: budget de longueur de taper imposé par un PDK type (ex. $\leq$~\SI{20}{\micro\metre} pour une transition ridge-to-strip) et son impact direct sur le choix de profil (linéaire vs parabolique) simulé dans ce chapitre.
+\end{flotfonderie}
+
+\noindent\textbf{Livrable prévu~:} courbe perte de conversion vs longueur de taper (linéaire et parabolique) + recommandation de longueur minimale sous contrainte fonderie donnée.
